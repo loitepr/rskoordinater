@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+			<title>RS Koordinater</title>
+			<style>
+				body {
+					font-family: arial;
+					font-style: bold;
+					font-size: 20px;
+					color: red;
+					background-color: black;
+				}
+				input, select {
+					color: red;
+					background-color: black;
+					font-size: 20px;
+					width: 100px;
+					text-align: center;
+					border-style:solid;
+					border-color: darkred;
+					padding: 10px;
+				}
+				table, tr, td {
+					border-style: none;
+					border-spacing: 0px;
+					padding: 10px;
+				}
+				table {
+					border-collapse: separate;
+					border-spacing: 0 15px;
+				}
+				#cells_dms, #cells_utm, #cells_mgrs {
+					background-color: #101010;
+				}
+				#cells_dd, #cells_result {
+					background-color: #002200;
+				}
+			</style>
+</head>
+	<body>
+
+		<table align="center">
+
+			<tr>
+				<td align="center">
+					Desimalgrader<br>(DD)
+				</td>
+				<td id="cells_dd">
+					<form id="DD" action="/action_page.php">
+						<input type="text" name="degN" value="58.149489" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">&deg;&nbsp;
+						<select id="hemisphere1" name="hemisphere1" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">
+							<option value="nord">Nord</option>
+							<option value="syd">Syd</option>
+						</select>
+						<br>
+						<input type="text" name="degE" value="8.033852" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">&deg;&nbsp;
+						<select id="hemisphere2" name="hemisphere2" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">
+							<option value="øst">Øst</option>
+							<option value="vest">Vest</option>
+						</select>
+					</form>
+				</td>
+				<td rowspan="11" width="400px" align="center" id="cells_result">
+					<p style="font-size:50px">
+							<span id="resultatN">58° 8.993' N</span>
+							<br><span id="resultatE">8° 2.031' Ø</span>
+					</p>
+				</td>
+			</tr>
+
+			<tr>
+				<td align="center">Desimalsekunder<br>(DMS)</td>
+				<td id="cells_dms">
+					<form id="DMS" action="/action_page.php">
+						<input type="text" name="degN" value="58" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">&deg;&nbsp;
+						<input type="text" name="minN" value="8" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">'&nbsp;
+						<input type="text" name="secN" value="58.1604" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">"&nbsp;
+						<select id="hemisphere3" name="hemisphere3" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">
+							<option value="nord">Nord</option>
+							<option value="syd">Syd</option>
+						</select>
+						<br>
+						<input type="text" name="degE" value="008" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">&deg;&nbsp;
+						<input type="text" name="minE" value="2" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">'&nbsp;
+						<input type="text" name="secE" value="1.8672" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">"&nbsp;
+						<select id="hemisphere4" name="hemisphere4" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">
+							<option value="øst">Øst</option>
+							<option value="vest">Vest</option>
+						</select>
+					</form>
+				</td>
+			</tr>
+
+			<tr>
+				<td align="center">UTM</td>
+				<td id="cells_utm">
+					<form id="UTM" action="/action_page.php">
+						<input type="text" name="northing" value="443131" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">meter øst
+						<br><input type="text" name="easting" value="6445760" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">meter nord
+						<br><input type="text" name="zone" value="32" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">sone
+					</form>
+				</td>
+			</tr>
+
+			<tr>
+				<td align="center">MGRS</td>
+				<td id="cells_mgrs">
+					<form id="MGRS" action="/action_page.php">
+						<input type="text" name="zone" value="32V" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">hovedsone
+						<br><input type="text" name="zone2" value="MK" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">100km-sone
+						<br><input type="text" name="northing" value="45760" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">meter nord
+						<br><input type="text" name="easting" value="43131" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">meter øst
+					</form>
+				</td>
+			</tr>
+		</table>
+
+		<script src="proj4.js"></script>
+		<script src="mgrs.js"></script>
+		<script type="text/javascript">
+
+			function DMfromDMS() {
+				var degN= Number(document.getElementById("DMS").elements.namedItem("degN").value);
+				var minN= Number(document.getElementById("DMS").elements.namedItem("minN").value);
+				var secN= Number(document.getElementById("DMS").elements.namedItem("secN").value);
+				var SecInMinN = secN/60;
+				var minNewN = minN + SecInMinN;
+
+				var degE= Number(document.getElementById("DMS").elements.namedItem("degE").value);
+				var minE= Number(document.getElementById("DMS").elements.namedItem("minE").value);
+				var secE= Number(document.getElementById("DMS").elements.namedItem("secE").value);
+				var SecInMinE = secE/60;
+				var minNewE = minE + SecInMinE;
+
+				document.getElementById("resultatN").innerHTML = degN.toString() + "&deg " + minNewN.toFixed(3).toString() + "' " + document.getElementById("hemisphere3").value.substring(0,1).toUpperCase();
+				document.getElementById("resultatE").innerHTML = degE.toString() + "&deg " + minNewE.toFixed(3).toString() + "' " + document.getElementById("hemisphere4").value.substring(0,1).toUpperCase();
+
+				document.getElementById('cells_dd').style.backgroundColor='#101010';
+				document.getElementById('cells_dms').style.backgroundColor='#002200';
+				document.getElementById('cells_utm').style.backgroundColor='#101010';
+				document.getElementById('cells_mgrs').style.backgroundColor='#101010';
+			};
+
+			function DMfromDD() {
+				var degN = Number(document.getElementById("DD").elements.namedItem("degN").value);
+				var degE = Number(document.getElementById("DD").elements.namedItem("degE").value);
+
+				var degdecN = (degN - Math.floor(degN))*60;
+				var degdecE = (degE - Math.floor(degE))*60;
+
+				document.getElementById("resultatN").innerHTML = Math.floor(degN).toString() + "&deg " + degdecN.toFixed(3).toString() + "' " + document.getElementById("hemisphere1").value.substring(0,1).toUpperCase();
+				document.getElementById("resultatE").innerHTML = Math.floor(degE).toString() + "&deg " + degdecE.toFixed(3).toString() + "' " + document.getElementById("hemisphere2").value.substring(0,1).toUpperCase();
+
+				document.getElementById('cells_dd').style.backgroundColor='#002200';
+				document.getElementById('cells_dms').style.backgroundColor='#101010';
+				document.getElementById('cells_utm').style.backgroundColor='#101010';
+				document.getElementById('cells_mgrs').style.backgroundColor='#101010';
+			};
+
+			function DMfromUTM() {
+				var utm = "+proj=utm +zone=" + document.getElementById("UTM").elements.namedItem("zone").value;
+				var wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+				var resultUTM = proj4(utm,wgs84,[Number(document.getElementById("UTM").elements.namedItem("northing").value),Number(document.getElementById("UTM").elements.namedItem("easting").value)]);
+
+				var degE = resultUTM.toString().substring(0,resultUTM.toString().indexOf(","));
+				var degN = resultUTM.toString().substring(resultUTM.toString().indexOf(",")+1,resultUTM.toString().length);
+
+				var degdecE = (degE - Math.floor(degE))*60;
+				var degdecN = (degN - Math.floor(degN))*60;
+
+				document.getElementById("resultatN").innerHTML = Math.floor(degN).toString() + "&deg " + degdecN.toFixed(3).toString() + "' " + document.getElementById("hemisphere1").value.substring(0,1).toUpperCase();
+				document.getElementById("resultatE").innerHTML = Math.floor(degE).toString() + "&deg " + degdecE.toFixed(3).toString() + "' " + document.getElementById("hemisphere2").value.substring(0,1).toUpperCase();
+
+				document.getElementById('cells_dd').style.backgroundColor='#101010';
+				document.getElementById('cells_dms').style.backgroundColor='#101010';
+				document.getElementById('cells_utm').style.backgroundColor='#002200';
+				document.getElementById('cells_mgrs').style.backgroundColor='#101010';
+			};
+
+			function DMfromMGRS() {
+				var resultMGRS = mgrs.toPoint(document.getElementById("MGRS").elements.namedItem("zone").value+document.getElementById("MGRS").elements.namedItem("zone2").value+document.getElementById("MGRS").elements.namedItem("easting").value+document.getElementById("MGRS").elements.namedItem("northing").value).toString();
+
+				var degE = resultMGRS.toString().substring(0,resultMGRS.toString().indexOf(","));
+				var degN = resultMGRS.toString().substring(resultMGRS.toString().indexOf(",")+1,resultMGRS.toString().length);
+
+				var degdecE = (degE - Math.floor(degE))*60;
+				var degdecN = (degN - Math.floor(degN))*60;
+
+				document.getElementById("resultatN").innerHTML = Math.floor(degN).toString() + "&deg " + degdecN.toFixed(3).toString() + "' N";
+				document.getElementById("resultatE").innerHTML = Math.floor(degE).toString() + "&deg " + degdecE.toFixed(3).toString() + "' Ø";
+
+				document.getElementById('cells_dd').style.backgroundColor='#101010';
+				document.getElementById('cells_dms').style.backgroundColor='#101010';
+				document.getElementById('cells_utm').style.backgroundColor='#101010';
+				document.getElementById('cells_mgrs').style.backgroundColor='#002200';
+			};
+
+		</script>
+
+	</body>
+</html>
