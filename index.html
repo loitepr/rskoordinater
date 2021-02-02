@@ -10,7 +10,7 @@
 					color: red;
 					background-color: black;
 				}
-				input, select {
+				input, select, button {
 					color: red;
 					background-color: black;
 					font-size: 20px;
@@ -47,14 +47,14 @@
 				</td>
 				<td id="cells_dd">
 					<form id="DD" action="/action_page.php">
-						<input type="text" name="degN" value="58.149489" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">&deg;&nbsp;
-						<select id="hemisphere1" name="hemisphere1" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">
+						<input type="text" name="degN" value="58.149489" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+						<select id="hemisphere1" name="hemisphere1" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
 							<option value="nord">Nord</option>
 							<option value="syd">Syd</option>
 						</select>
 						<br>
-						<input type="text" name="degE" value="8.033852" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">&deg;&nbsp;
-						<select id="hemisphere2" name="hemisphere2" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">
+						<input type="text" name="degE" value="8.033852" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+						<select id="hemisphere2" name="hemisphere2" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
 							<option value="øst">Øst</option>
 							<option value="vest">Vest</option>
 						</select>
@@ -72,18 +72,18 @@
 				<td align="center">Desimalsekunder<br>(DMS)</td>
 				<td id="cells_dms">
 					<form id="DMS" action="/action_page.php">
-						<input type="text" name="degN" value="58" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">&deg;&nbsp;
-						<input type="text" name="minN" value="8" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">'&nbsp;
-						<input type="text" name="secN" value="58.1604" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">"&nbsp;
-						<select id="hemisphere3" name="hemisphere3" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">
+						<input type="text" name="degN" value="58" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+						<input type="text" name="minN" value="8" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">'&nbsp;
+						<input type="text" name="secN" value="58.1604" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">"&nbsp;
+						<select id="hemisphere3" name="hemisphere3" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
 							<option value="nord">Nord</option>
 							<option value="syd">Syd</option>
 						</select>
 						<br>
-						<input type="text" name="degE" value="008" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">&deg;&nbsp;
-						<input type="text" name="minE" value="2" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">'&nbsp;
-						<input type="text" name="secE" value="1.8672" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">"&nbsp;
-						<select id="hemisphere4" name="hemisphere4" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">
+						<input type="text" name="degE" value="008" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+						<input type="text" name="minE" value="2" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">'&nbsp;
+						<input type="text" name="secE" value="1.8672" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">"&nbsp;
+						<select id="hemisphere4" name="hemisphere4" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
 							<option value="øst">Øst</option>
 							<option value="vest">Vest</option>
 						</select>
@@ -95,9 +95,9 @@
 				<td align="center">UTM</td>
 				<td id="cells_utm">
 					<form id="UTM" action="/action_page.php">
-						<input type="text" name="northing" value="443131" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">meter øst
-						<br><input type="text" name="easting" value="6445760" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">meter nord
-						<br><input type="text" name="zone" value="32" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">sone
+						<input type="text" name="northing" value="443131" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter øst
+						<br><input type="text" name="easting" value="6445760" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter nord
+						<br><input type="text" name="zone" value="32" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> sone
 					</form>
 				</td>
 			</tr>
@@ -106,10 +106,10 @@
 				<td align="center">MGRS</td>
 				<td id="cells_mgrs">
 					<form id="MGRS" action="/action_page.php">
-						<input type="text" name="zone" value="32V" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">hovedsone
-						<br><input type="text" name="zone2" value="MK" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">100km-sone
-						<br><input type="text" name="northing" value="45760" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">meter nord
-						<br><input type="text" name="easting" value="43131" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();">meter øst
+						<input type="text" name="zone" value="32V" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> hovedsone
+						<br><input type="text" name="zone2" value="MK" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> 100km-sone
+						<br><input type="text" name="northing" value="45760" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter nord
+						<br><input type="text" name="easting" value="43131" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter øst
 					</form>
 				</td>
 			</tr>
