@@ -119,7 +119,7 @@
 
 		<br>
 		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1002&zoom=13&lat=6466544&lon=90403&type=1" backgroundcolor=black width="24%" height="400" id="map_land"></iframe>
-		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1003&zoom=13&lat=6466544&lon=90403&type=1" backgroundcolor=black width="24%" height="400" id="map_raster"></iframe>
+		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1011&zoom=13&lat=6466544&lon=90403&type=1" backgroundcolor=black width="24%" height="400" id="map_sea"></iframe>
 		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1004&zoom=13&lat=6466544&lon=90403&type=1" backgroundcolor=black width="24%" height="400" id="map_flybilde"></iframe>
 		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1005&zoom=13&lat=6466544&lon=90403&type=1" backgroundcolor=black width="24%" height="400" id="map_gratone"></iframe>
 
@@ -234,12 +234,12 @@
 				var UTM33Lat  = Math.round(easting);
 
 				document.getElementById("map_land").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1002&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1";
-				document.getElementById("map_raster").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1003&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1";
+				document.getElementById("map_sea").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1011&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1";
 				document.getElementById("map_flybilde").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1004&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1";
 				document.getElementById("map_gratone").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1005&zoom=13&lat=" + UTM33Lat + "&lon=" +UTM33Lon  + "&type=1";
 
 				document.getElementById("map_land").parentNode.replaceChild(document.getElementById("map_land").cloneNode(), document.getElementById("map_land"));
-				document.getElementById("map_raster").parentNode.replaceChild(document.getElementById("map_raster").cloneNode(), document.getElementById("map_raster"));
+				document.getElementById("map_sea").parentNode.replaceChild(document.getElementById("map_sea").cloneNode(), document.getElementById("map_sea"));
 				document.getElementById("map_flybilde").parentNode.replaceChild(document.getElementById("map_flybilde").cloneNode(), document.getElementById("map_flybilde"));
 				document.getElementById("map_gratone").parentNode.replaceChild(document.getElementById("map_gratone").cloneNode(), document.getElementById("map_gratone"));
 			};
