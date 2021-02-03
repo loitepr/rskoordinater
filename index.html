@@ -110,7 +110,7 @@
 						<input type="text" name="zone" value="32V" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> hovedsone
 						<br><input type="text" name="zone2" value="MK" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> 100km-sone
 						<br><input type="text" name="easting" value="43131" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter øst
-						<br><input type="text" name="northing" value="45760" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter nord
+						<br><input type="text" name="northing" value="45760" onchange="UpdateMap();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter nord
 					</form>
 				</td>
 			</tr>
@@ -196,8 +196,49 @@
 				document.getElementById('cells_mgrs').style.backgroundColor='#002200';
 			};
 
+			function UpdateMap() {
+				var ei = [57,8];
+				var source = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+				var dest = "+proj=utm +zone=32";
+
+				document.getElementById("svar").innerHTML = proj4(source, dest, ei).toString();
+			};
 		</script>
 
+		<span id="svar">svar</span>
+<!--
+
+function UpdateMap() {
+	document.getElementById("svar").innerHTML = "2";
+	var proj4Arr = [59.1, 8.2];
+	document.getElementById("svar").innerHTML ="3";
+	var source = "+proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees +no_defs";
+	document.getElementById("svar").innerHTML = "4";
+	var dest = "+proj=utm +ellps=WGS84 +datum=WGS84 +units=m +no_defs";
+
+	document.getElementById("svar").innerHTML = proj4(source, dest, proj4Arr));
+
+
+	var UTM33Lat = ;
+	var UTM33Lon = ;
+
+	document.getElementById('map_land').src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1002&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1"+;
+	document.getElementById('map_raster').src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1003&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1"+;
+	document.getElementById('map_flybilde').src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1004&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1"+;
+	document.getElementById('map_gratone').src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1005&zoom=13&lat=" + UTM33Lat + "&lon=" +UTM33Lon  + "&type=1"+;
+
+};
+
+
+
+<br>
+<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1002&zoom=13&lat=6466544&lon=90402&type=1" width="24%" height="400" id="map_land"></iframe>
+<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1003&zoom=13&lat=6466544&lon=90402&type=1" width="24%" height="400" id="map_raster"></iframe>
+<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1004&zoom=13&lat=6466544&lon=90402&type=1" width="24%" height="400" id="map_flybilde"></iframe>
+<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1005&zoom=13&lat=6466544&lon=90402&type=1" width="24%" height="400" id="map_gratone"></iframe>
+
+
+
+-->
 	</body>
 </html>
-
