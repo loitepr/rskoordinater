@@ -21,7 +21,7 @@
 					padding: 5px;
 				}
 				table, tr, td {
-					border-style: none;
+					border-style: 1px;
 					border-spacing: 0px;
 					padding: 10px;
 				}
@@ -118,10 +118,24 @@
 		</table>
 
 		<br>
-		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1002&zoom=13&lat=6466544&lon=90403&type=1" backgroundcolor=black width="24%" height="400" id="map_land"></iframe>
-		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1011&zoom=13&lat=6466544&lon=90403&type=1" backgroundcolor=black width="24%" height="400" id="map_sea"></iframe>
-		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1003&zoom=13&lat=6466544&lon=90403&type=1" backgroundcolor=black width="24%" height="400" id="map_flybilde"></iframe>
-		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1005&zoom=13&lat=6466544&lon=90403&type=1" backgroundcolor=black width="24%" height="400" id="map_gratone"></iframe>
+		<form id="map_settings" action="/action_page.php" align="center">
+			<select style="width:200px" id="map_type" name="map_type" onchange="UpdateMap();">
+				<option value="1011">Sjøkart - ENC</option>
+				<option value="1008">Sjøkart papir</option>
+				<option value="1002">Landkart</option>
+				<option value="1003">Flyfoto</option>
+				<option value="1004">Raster</option>
+				<option value="1006">Enkel</option>
+				<option value="1007">Terreng</option>
+				<option value="1002">Landkart</option>
+				<option value="1002">Landkart</option>
+			</select>
+		</form>
+
+		<div align="center" style="font-size:12px">
+			<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1011&zoom=13&lat=6466544&lon=90403&markerLat=6466544.0000&markerLon=90403.0000&type=1" backgroundcolor=black width="80%" height="500" id="map_area" ></iframe>
+			<br>Kartene er hentet fra norgeskart.no © Kartverket
+		</div>
 
 		<script src="proj4.js"></script>
 		<script src="mgrs.js"></script>
@@ -233,15 +247,11 @@
 				var UTM33Lon = Math.round(northing); //norgeskart.no har byttet på aksene
 				var UTM33Lat  = Math.round(easting);
 
-				document.getElementById("map_land").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1002&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1";
-				document.getElementById("map_sea").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1011&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1";
-				document.getElementById("map_flybilde").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1003&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&type=1";
-				document.getElementById("map_gratone").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=1005&zoom=13&lat=" + UTM33Lat + "&lon=" +UTM33Lon  + "&type=1";
+				var Layer = document.getElementById("map_settings").elements.namedItem("map_type").value;
 
-				document.getElementById("map_land").parentNode.replaceChild(document.getElementById("map_land").cloneNode(), document.getElementById("map_land"));
-				document.getElementById("map_sea").parentNode.replaceChild(document.getElementById("map_sea").cloneNode(), document.getElementById("map_sea"));
-				document.getElementById("map_flybilde").parentNode.replaceChild(document.getElementById("map_flybilde").cloneNode(), document.getElementById("map_flybilde"));
-				document.getElementById("map_gratone").parentNode.replaceChild(document.getElementById("map_gratone").cloneNode(), document.getElementById("map_gratone"));
+				document.getElementById("map_area").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=" + Layer + "&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&markerLat=" + UTM33Lat + "&markerLon=" + UTM33Lon + "&type=1";
+
+				document.getElementById("map_area").parentNode.replaceChild(document.getElementById("map_area").cloneNode(), document.getElementById("map_area"));
 			};
 
 		</script>
