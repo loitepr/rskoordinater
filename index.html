@@ -159,7 +159,19 @@
 				var y_value = Number(N_deg) + Number(N_min)/60;
 				var x_value = Number(E_deg) + Number(E_min)/60;
 
-				var url = "http://api.sehavniva.no/tideapi.php?lat=" + y_value + "&lon=" + x_value + "&fromtime=2021-02-08T00%3A00&totime=2021-02-09T00%3A00&datatype=all&refcode=cd&place=&file=&lang=nn&interval=10&dst=0&tzone=&tide_request=locationdata";
+				var currentDate;
+				var currentHour;
+				var endDate;
+
+				function pad(n){return n<10 ? '0'+n : n}
+				currentDate = new Date();
+				var endDate = new Date();
+				currentDate = currentDate.getFullYear() + "-" + pad((currentDate.getMonth() + 1)) + "-" + pad(currentDate.getDate());
+				endDate = endDate.getFullYear() + "-" + pad((endDate.getMonth() + 1)) + "-" + pad((endDate.getDate() + 1));
+				currentHour = pad(new Date().getHours()-5);
+
+				var url = "http://api.sehavniva.no/tideapi.php?lat=" + y_value + "&lon=" + x_value + "&fromtime=" + currentDate + "T" + currentHour + "%3A00&totime=" + endDate + "T" + currentHour + "%3A00&datatype=all&refcode=cd&place=&file=&lang=nn&interval=10&dst=0&tzone=&tide_request=locationdata";
+
 				var zArrayObs;
 				var zArrayPre;
 				var zArrayNon;
@@ -215,7 +227,7 @@
 					data.addColumn('number', 'Teoretisk uten vind');
 					data.addColumn('number', 'Meldt vannstand');
 					data.addColumn('number', 'Værets bidrag');
-console.log("loaded");
+
 					for(i = 0; i < zArrayObs.length; i++)
 					data.addRow([new Date(zArrayTimeObs[i]), zArrayObs[i], null, null, null]);
 
