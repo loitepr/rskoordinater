@@ -8,7 +8,7 @@
 					font-style: bold;
 					font-size: 20px;
 					color: red;
-					background-color: black;
+					background-color:  black;
 				}
 				input, select, button {
 					color: red;
@@ -63,9 +63,8 @@
 				<td rowspan="11" align="center" id="cells_result">
 					Grader og<br>desimal-<br>minutter<br>(DM):<br><br>
 					<p style="font-size:40px">
-
-						        <span id="resultatN">58° 8.969' N</span>
-							<br><span id="resultatE">8° 2.031' Ø</span>
+						<span id="resultatN">58° 8.969' N</span>
+						<br><span id="resultatE">8° 2.031' Ø</span>
 					</p>
 				</td>
 			</tr>
@@ -117,8 +116,7 @@
 			</tr>
 		</table>
 
-		<br>
-		<form id="map_settings" action="/action_page.php" align="center">
+		<br><form id="map_settings" action="/action_page.php" align="center">
 			<select style="width:200px" id="map_type" name="map_type" onchange="UpdateMap();">
 				<option value="1011">Sjøkart - ENC</option>
 				<option value="1008">Sjøkart papir</option>
@@ -131,13 +129,143 @@
 			</select>
 		</form>
 
-		<div align="center" style="font-size:12px">
+		<br><div align="center" style="font-size:12px">
 			<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1011&zoom=13&lat=6466544&lon=90403&markerLat=6466544.0000&markerLon=90403.0000&type=1" backgroundcolor=black width="80%" height="500" id="map_area" ></iframe>
 			<br>Kartene er hentet fra norgeskart.no © Kartverket
+			<br><div id="chart_div" style="width: 100%; height: 800px;"></div>
 		</div>
+		<div id="debug"></div>
 
-		<script src="proj4.js"></script>
-		<script src="mgrs.js"></script>
+
+
+<!--   JAVASCRIPT   -->
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript">
+			google.charts.load('current', {'packages':['corechart', 'scatter']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+				var source = "+proj=longlat +datum=WGS84 +no_defs ";
+				var dest = "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
+
+				var resultN = document.getElementById("resultatN").innerHTML;
+				var resultE = document.getElementById("resultatE").innerHTML;
+
+				var N_deg = resultN.substring(0,resultN.indexOf("°"));
+				var N_min = resultN.substring(resultN.indexOf(" ")+1, resultN.indexOf("'"));
+				var E_deg = resultE.substring(0,resultE.indexOf("°"));
+				var E_min = resultE.substring(resultE.indexOf(" ")+1, resultE.indexOf("'"));
+
+				var y_value = Number(N_deg) + Number(N_min)/60;
+				var x_value = Number(E_deg) + Number(E_min)/60;
+
+				var url = "http://api.sehavniva.no/tideapi.php?lat=" + y_value + "&lon=" + x_value + "&fromtime=2021-02-08T00%3A00&totime=2021-02-09T00%3A00&datatype=all&refcode=cd&place=&file=&lang=nn&interval=10&dst=0&tzone=&tide_request=locationdata";
+				var zArrayObs;
+				var zArrayPre;
+				var zArrayNon;
+				var zArrayFor;
+				var zArrayTimeObs;
+				var zArrayTimePre;
+				var zArrayTimeNon;
+				var zArrayTimeFor;
+
+				fetch(url)
+				.then(x => x.text())
+				.then(function(response){
+					let parser = new DOMParser();
+					let xml = parser.parseFromString(response, "text/xml");
+					let countObs = xml.evaluate('count(/tide/locationdata/data[position()=1]/*)', xml, null, XPathResult.ANY_TYPE, null).numberValue;
+					let countPre = xml.evaluate('count(/tide/locationdata/data[position()=2]/*)', xml, null, XPathResult.ANY_TYPE, null).numberValue;
+					let countNone = xml.evaluate('count(/tide/locationdata/data[position()=3]/*)', xml, null, XPathResult.ANY_TYPE, null).numberValue;
+					let countForecast = xml.evaluate('count(/tide/locationdata/data[position()=4]/*)', xml, null, XPathResult.ANY_TYPE, null).numberValue;
+
+					zArrayObs = Array(countObs);
+					zArrayPre = Array(countPre);
+					zArrayNon = Array(countNone);
+					zArrayFor = Array(countForecast);
+					zArrayTimeObs = Array(countObs);
+					zArrayTimePre = Array(countPre);
+					zArrayTimeNon = Array(countNone);
+					zArrayTimeFor = Array(countForecast);
+
+					for (i = 1; i <= countObs; i++) {
+						zArrayObs[i-1] = Number(xml.evaluate('/tide/locationdata/data[position()=1]/waterlevel[position()=' + i + ']/@value', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent);
+						zArrayTimeObs[i-1] = xml.evaluate('/tide/locationdata/data[position()=1]/waterlevel[position()=' + i + ']/@time', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent;
+					}
+
+					for (i = 1; i <= countPre; i++) {
+						zArrayPre[i-1] = Number(xml.evaluate('/tide/locationdata/data[position()=2]/waterlevel[position()=' + i + ']/@value', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent);
+						zArrayTimePre[i-1] = xml.evaluate('/tide/locationdata/data[position()=2]/waterlevel[position()=' + i + ']/@time', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent;
+					}
+
+					for (i = 1; i <= countNone; i++) {
+						zArrayNon[i-1] = Number(xml.evaluate('/tide/locationdata/data[position()=3]/waterlevel[position()=' + i + ']/@value', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent);
+						zArrayTimeNon[i-1] = xml.evaluate('/tide/locationdata/data[position()=1]/waterlevel[position()=' + i + ']/@time', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent;
+					}
+
+					for (i = 1; i <= countForecast; i++) {
+						zArrayFor[i-1] = Number(xml.evaluate('/tide/locationdata/data[position()=4]/waterlevel[position()=' + i + ']/@value', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent);
+						zArrayTimeFor[i-1] = xml.evaluate('/tide/locationdata/data[position()=4]/waterlevel[position()=' + i + ']/@time', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent;
+					}
+
+					var data = new google.visualization.DataTable();
+
+					data.addColumn('datetime', 'tid');
+					data.addColumn('number', 'Observert');
+					data.addColumn('number', 'Teoretisk uten vind');
+					data.addColumn('number', 'Meldt vannstand');
+					data.addColumn('number', 'Værets bidrag');
+console.log("loaded");
+					for(i = 0; i < zArrayObs.length; i++)
+					data.addRow([new Date(zArrayTimeObs[i]), zArrayObs[i], null, null, null]);
+
+					for(i = 0; i < zArrayFor.length; i++)
+					data.addRow([new Date(zArrayTimeFor[i]), null, null, zArrayFor[i], null]);
+
+					for(i = 0; i < zArrayNon.length; i++)
+					data.addRow([new Date(zArrayTimeNon[i]), null, null, null, zArrayNon[i]]);
+
+					for(i = 0; i < zArrayPre.length; i++)
+					data.addRow([new Date(zArrayTimePre[i]), null, zArrayPre[i], null, null]);
+
+	        var options = {
+	          title: 'Tidevannsnivå',
+	          hAxis: {
+							title: 'Neste døgn',
+							titleTextStyle: {color: '#ff0000'},
+							gridlines: {color: '#550000'},
+							baselineColor: {color:'#550000'},
+							textStyle:{color: '#ff0000'}
+						},
+						vAxis: {
+							title: 'Meter over sjøkartnull',
+							titleTextStyle: {color: '#ff0000'},
+							gridlines: {color: '#550000'},
+							baselineColor: {color:'#550000'},
+							textStyle:{color: '#ff0000'}
+						},
+						legend: {
+							position: 'bottom',
+							textStyle: {color: '#ff0000'}
+						},
+						tooltip: {
+							boxStyle: {
+								stroke: '#000000',
+								strokeWidth: 2,
+							}
+						},
+						pointSize: 3,
+						backgroundColor: '#000000',
+						colors:['#ff0000','#884400','#660000', '#ffaa00']
+	        };
+
+	        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+	        chart.draw(data, options);
+				});
+  		}
+		</script>
+		<script src="proj4.js">							// Javascript for konvertering fra UTM async	</script>
+		<script src="mgrs.js"> 							// Javascript for konvertering fra MGRS				</script>
 		<script type="text/javascript">
 
 			function DMfromDMS() {
@@ -163,7 +291,6 @@
 
 				UpdateMap();
 			};
-
 			function DMfromDD() {
 				var degN = Number(document.getElementById("DD").elements.namedItem("degN").value);
 				var degE = Number(document.getElementById("DD").elements.namedItem("degE").value);
@@ -181,7 +308,6 @@
 
 				UpdateMap();
 			};
-
 			function DMfromUTM() {
 				var utm = "+proj=utm +zone=" + document.getElementById("UTM").elements.namedItem("zone").value;
 				var wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
@@ -203,7 +329,6 @@
 
 				UpdateMap();
 			};
-
 			function DMfromMGRS() {
 				var resultMGRS = mgrs.toPoint(document.getElementById("MGRS").elements.namedItem("zone").value+document.getElementById("MGRS").elements.namedItem("zone2").value+document.getElementById("MGRS").elements.namedItem("easting").value+document.getElementById("MGRS").elements.namedItem("northing").value).toString();
 
@@ -223,7 +348,6 @@
 
 				UpdateMap();
 			};
-
 			function UpdateMap() {
 				var source = "+proj=longlat +datum=WGS84 +no_defs ";
 				var dest = "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
@@ -250,8 +374,9 @@
 
 				document.getElementById("map_area").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=" + Layer + "&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&markerLat=" + UTM33Lat + "&markerLon=" + UTM33Lon + "&type=1";
 				document.getElementById("map_area").parentNode.replaceChild(document.getElementById("map_area").cloneNode(), document.getElementById("map_area"));
-			};
 
+				drawChart();
+			};
 		</script>
 
 	</body>
