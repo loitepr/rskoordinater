@@ -248,7 +248,7 @@ function DrawTideChart() {
         }
       };
 
-      var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
       chart.draw(data, options);
     });
   };
@@ -360,7 +360,7 @@ function DrawWeatherChart() {
       }
     };
 
-    var chart = new google.visualization.ScatterChart(document.getElementById('chart_wave'));
+    var chart = new google.visualization.LineChart(document.getElementById('chart_wave'));
     chart.draw(data, options);
   });
 

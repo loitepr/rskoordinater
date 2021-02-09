@@ -7,7 +7,7 @@
 </head>
 	<body>
 
-		<div class="tab" style:"align:center">
+		<div class="tab">
 		  <button class="tablinks" onclick="OpenTab(event, 'tabDD');DMfromDD()">DD</button>
 		  <button class="tablinks" onclick="OpenTab(event, 'tabDM');DMfromDM()" id="defaultSelected">DM</button>
 		  <button class="tablinks" onclick="OpenTab(event, 'tabDMS');DMfromDMS()">DMS</button>
@@ -98,13 +98,20 @@
 		<br>
 
 		<p class="result">
-			&darr;<br>
-			<div id="resultatN" class="result">58° 8.969' N</div>
+			&darr;
+			<br><div id="resultatN" class="result">58° 8.969' N</div>
 			<br><div id="resultatE" class="result">8° 2.031' Ø</div>
 		</p>
 
-		<br><form id="map_settings" action="/action_page.php" align="center">
-			<select style="width:200px" id="map_type" name="map_type" onchange="UpdateMapLocation();">
+		<!-- TIDE CHART -->
+		<br><div id="chart_div" style="width: 90%; height: 500px; text-align:center"></div>
+
+		<!--  WEATHER CHART -->
+		<br><div id="chart_wave" style="width: 90%; height: 500px;"></div>
+
+		<!-- MAP -->
+		<br><form id="map_settings" action="/action_page.php" align="right">
+			<select style="width:300px" id="map_type" name="map_type" onchange="UpdateMapLocation();">
 				<option value="1011">Sjøkart - ENC</option>
 				<option value="1008">Sjøkart papir</option>
 				<option value="1002">Landkart</option>
@@ -116,16 +123,13 @@
 			</select>
 		</form>
 
-
-		<!-- MAP -->
 		<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1011&zoom=13&lat=6466544&lon=90403&markerLat=6466544.0000&markerLon=90403.0000&type=1" backgroundcolor=black width="100%" height="500" id="map_area" ></iframe>
-		<br><div style="font-size: 12px; text-align:center">Kartene er hentet fra norgeskart.no © Kartverket</div>
 
-		<!-- TIDE CHART -->
-		<br><div id="chart_div" style="width: 100%; height: 500px;"></div>
-
-		<!--  WEATHER CHART -->
-		<br><div id="chart_wave" style="width: 100%; height: 500px;"></div>
+		<div style="font-size: 12px; text-align:center">
+			<br>Kartene er © Kartverket og hentet fra norgeskart.no
+			<br>Værdata hentet fra MET Norway (met.no/yr.no)
+			<br>Tidevannsnivå hentet fra fra Kartverket (sehavniva.no).
+		</div>
 
 		<script src="https://www.gstatic.com/charts/loader.js"></script>		<!-- 		Goole Charts 		- used to display charts 											-->
 		<script src="proj4.js"></script>																		<!-- 		Proj4js					- used to convert UTM 												-->
