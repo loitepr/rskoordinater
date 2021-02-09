@@ -2,123 +2,109 @@
 <html>
 	<head>
 			<title>RS Koordinater</title>
-			<style>
-				body {
-					font-family: arial;
-					font-style: bold;
-					font-size: 20px;
-					color: red;
-					background-color:  black;
-				}
-				input, select, button {
-					color: red;
-					background-color: black;
-					font-size: 20px;
-					width: 100px;
-					text-align: center;
-					border-style:solid;
-					border-color: darkred;
-					padding: 5px;
-				}
-				table, tr, td {
-					border-style: 1px;
-					border-spacing: 0px;
-					padding: 10px;
-				}
-				table {
-					border-collapse: separate;
-					border-spacing: 0 15px;
-				}
-				#cells_dms, #cells_utm, #cells_mgrs {
-					background-color: #101010;
-				}
-				#cells_dd, #cells_result {
-					background-color: #003300;
-				}
-			</style>
+			<link rel="stylesheet" href="styles.css">
 			<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 </head>
 	<body>
 
-		<table align="center">
+		<div class="tab" style:"align:center">
+		  <button class="tablinks" onclick="OpenTab(event, 'tabDD');DMfromDD()">DD</button>
+		  <button class="tablinks" onclick="OpenTab(event, 'tabDM');DMfromDM()" id="defaultSelected">DM</button>
+		  <button class="tablinks" onclick="OpenTab(event, 'tabDMS';)DMfromDMS()">DMS</button>
+			<button class="tablinks" onclick="OpenTab(event, 'tabUTM');DMfromUTM()">UTM</button>
+		  <button class="tablinks" onclick="OpenTab(event, 'tabMGRS');DMfromMGRS()">MGRS</button>
+		</div>
 
-			<tr>
-				<td align="center">
-					Desimal-<br>grader<br>(DD)
-				</td>
-				<td id="cells_dd">
-					<form id="DD" action="/action_page.php">
-						<input type="number" name="degN" value="58.149489" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
-						<select id="hemisphere1" name="hemisphere1" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
-							<option value="nord">Nord</option>
-							<option value="syd">Syd</option>
-						</select>
-						<br>
-						<input type="number" name="degE" value="8.033852" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
-						<select id="hemisphere2" name="hemisphere2" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
-							<option value="øst">Øst</option>
-							<option value="vest">Vest</option>
-						</select>
-					</form>
-				</td>
-				<td rowspan="11" align="center" id="cells_result">
-					Grader og<br>desimal-<br>minutter<br>(DM):<br><br>
-					<p style="font-size:40px">
-						<span id="resultatN">58° 8.969' N</span>
-						<br><span id="resultatE">8° 2.031' Ø</span>
-					</p>
-				</td>
-			</tr>
+		<div id="tabDD" class="tabcontent">
+				<h3>Desimalgrader</h3>
+			<form id="DD" action="/action_page.php">
+				<input type="number" name="degN" value="58.149489" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+				<select id="hemisphere1" name="hemisphere1" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
+					<option value="nord">Nord</option>
+					<option value="syd">Syd</option>
+				</select>
+				<br>
+				<input type="number" name="degE" value="8.033852" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+				<select id="hemisphere2" name="hemisphere2" onchange="DMfromDD();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
+					<option value="øst">Øst</option>
+					<option value="vest">Vest</option>
+				</select>
+			</form>
+		</div>
 
-			<tr>
-				<td align="center">Desimal-<br>sekunder<br>(DMS)</td>
-				<td id="cells_dms">
-					<form id="DMS" action="/action_page.php">
-						<input type="number" name="degN" value="58" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
-						<input type="number" name="minN" value="8" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">'&nbsp;
-						<input type="number" name="secN" value="58.1604" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">"&nbsp;
-						<select id="hemisphere3" name="hemisphere3" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
-							<option value="nord">Nord</option>
-							<option value="syd">Syd</option>
-						</select>
-						<br>
-						<input type="number" name="degE" value="008" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
-						<input type="number" name="minE" value="2" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">'&nbsp;
-						<input type="number" name="secE" value="1.8672" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">"&nbsp;
-						<select id="hemisphere4" name="hemisphere4" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
-							<option value="øst">Øst</option>
-							<option value="vest">Vest</option>
-						</select>
-					</form>
-				</td>
-			</tr>
+		<div id="tabDM" class="tabcontent">
+			<h3>Desimalminutter</h3>
+			<form id="DM" action="/action_page.php">
+				<input type="number" name="degN" value="58" onchange="DMfromDM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+				<input type="number" name="minN" value="8.969" onchange="DMfromDM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">'&nbsp;
+				<select id="hemisphere5" name="hemisphere5" onchange="DMfromDM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
+					<option value="nord">Nord</option>
+					<option value="syd">Syd</option>
+				</select>
+				<br>
+				<input type="number" name="degE" value="008" onchange="DMfromDM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+				<input type="number" name="minE" value="2.031" onchange="DMfromDM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">'&nbsp;
+				<select id="hemisphere6" name="hemisphere6" onchange="DMfromDM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
+					<option value="øst">Øst</option>
+					<option value="vest">Vest</option>
+				</select>
+			</form>
+		</div>
 
-			<tr>
-				<td align="center">UTM</td>
-				<td id="cells_utm">
-					<form id="UTM" action="/action_page.php">
-						<input type="number" name="northing" value="443131" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter øst
-						<br><input type="number" name="easting" value="6445760" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter nord
-						<br><input type="number" name="zone" value="32" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> sone
-					</form>
-				</td>
-			</tr>
+		<div id="tabDMS" class="tabcontent">
+			<h3>Desimalsekunder</h3>
+			<form id="DMS" action="/action_page.php">
+				<input type="number" name="degN" value="58" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+				<input type="number" name="minN" value="8" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">'&nbsp;
+				<input type="number" name="secN" value="58.1604" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">"&nbsp;
+				<select id="hemisphere3" name="hemisphere3" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
+					<option value="nord">Nord</option>
+					<option value="syd">Syd</option>
+				</select>
+				<br>
+				<input type="number" name="degE" value="008" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">&deg;&nbsp;
+				<input type="number" name="minE" value="2" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">'&nbsp;
+				<input type="number" name="secE" value="1.8672" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">"&nbsp;
+				<select id="hemisphere4" name="hemisphere4" onchange="DMfromDMS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();">
+					<option value="øst">Øst</option>
+					<option value="vest">Vest</option>
+				</select>
+			</form>
+		</div>
 
-			<tr>
-				<td align="center">MGRS</td>
-				<td id="cells_mgrs">
-					<form id="MGRS" action="/action_page.php">
-						<input type="text" name="zone" value="32V" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> hovedsone
-						<br><input type="text" name="zone2" value="MK" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> 100km-sone
-						<br><input type="number" name="easting" value="43131" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter øst
-						<br><input type="number" name="northing" value="45760" onchange="UpdateMap();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter nord
-					</form>
-				</td>
-			</tr>
-		</table>
+		<div id="tabUTM" class="tabcontent">
+			<div style="display: inline-block; text-align: left;">
+				<h3>Universal Transversal Mercator</h3>
+				<form id="UTM" action="/action_page.php">
+					<input type="number" name="northing" value="443131" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter øst
+					<br><input type="number" name="easting" value="6445760" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter nord
+					<br><input type="number" name="zone" value="32" onchange="DMfromUTM();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> sone
+				</form>
+			</div>
+		</div>
+
+		<div id="tabMGRS" class="tabcontent">
+			<div style="display: inline-block; text-align: left;">
+				<h3>Military Grid Reference System</h3>
+				<form id="MGRS" action="/action_page.php">
+					<input type="text" name="zone" value="32V" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> hovedsone
+					<br><input type="text" name="zone2" value="MK" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> 100km-sone
+					<br><input type="number" name="easting" value="43131" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter øst
+					<br><input type="number" name="northing" value="45760" onchange="DMfromMGRS();" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" onclick="this.onchange();"> meter nord
+				</form>
+			</div>
+		</div>
+
+		<br>
+
+		<p class="result">
+			&darr;<br>
+			<div id="resultatN" class="result">58° 8.969' N</div>
+			<br><div id="resultatE" class="result">8° 2.031' Ø</div>
+		</p>
 
 		<br><form id="map_settings" action="/action_page.php" align="center">
-			<select style="width:200px" id="map_type" name="map_type" onchange="UpdateMap();">
+			<select style="width:200px" id="map_type" name="map_type" onchange="UpdateMapLocation();">
 				<option value="1011">Sjøkart - ENC</option>
 				<option value="1008">Sjøkart papir</option>
 				<option value="1002">Landkart</option>
@@ -130,268 +116,15 @@
 			</select>
 		</form>
 
-		<br><div align="center" style="font-size:12px">
-			<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1011&zoom=13&lat=6466544&lon=90403&markerLat=6466544.0000&markerLon=90403.0000&type=1" backgroundcolor=black width="80%" height="500" id="map_area" ></iframe>
+		<div align="center" style="font-size:12px">
+			<iframe src="https://www.norgeskart.no/#!?project=norgeskart&layers=1011&zoom=13&lat=6466544&lon=90403&markerLat=6466544.0000&markerLon=90403.0000&type=1" backgroundcolor=black width="100%" height="500" id="map_area" ></iframe>
 			<br>Kartene er hentet fra norgeskart.no © Kartverket
-			<br><div id="chart_div" style="width: 100%; height: 800px;"></div>
+			<br><div id="chart_div" style="width: 100%; height: 500px;"></div>
 		</div>
-		<div id="debug"></div>
 
-
-
-<!--   JAVASCRIPT   -->
-		<script src="https://www.gstatic.com/charts/loader.js"></script>
-		<script type="text/javascript">
-			google.charts.load('current', {'packages':['corechart', 'scatter']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-				var source = "+proj=longlat +datum=WGS84 +no_defs ";
-				var dest = "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
-
-				var resultN = document.getElementById("resultatN").innerHTML;
-				var resultE = document.getElementById("resultatE").innerHTML;
-
-				var N_deg = resultN.substring(0,resultN.indexOf("°"));
-				var N_min = resultN.substring(resultN.indexOf(" ")+1, resultN.indexOf("'"));
-				var E_deg = resultE.substring(0,resultE.indexOf("°"));
-				var E_min = resultE.substring(resultE.indexOf(" ")+1, resultE.indexOf("'"));
-
-				var y_value = Number(N_deg) + Number(N_min)/60;
-				var x_value = Number(E_deg) + Number(E_min)/60;
-
-				var currentDate;
-				var currentHour;
-				var endDate;
-
-				function pad(n){return n<10 ? '0'+n : n}
-				currentDate = new Date();
-				var endDate = new Date();
-				currentDate = currentDate.getFullYear() + "-" + pad((currentDate.getMonth() + 1)) + "-" + pad(currentDate.getDate());
-				endDate = endDate.getFullYear() + "-" + pad((endDate.getMonth() + 1)) + "-" + pad((endDate.getDate() + 1));
-				currentHour = pad(new Date().getHours()-5);
-
-				var url = "http://api.sehavniva.no/tideapi.php?lat=" + y_value + "&lon=" + x_value + "&fromtime=" + currentDate + "T" + currentHour + "%3A00&totime=" + endDate + "T" + currentHour + "%3A00&datatype=all&refcode=cd&place=&file=&lang=nn&interval=10&dst=0&tzone=&tide_request=locationdata";
-
-				var zArrayObs;
-				var zArrayPre;
-				var zArrayNon;
-				var zArrayFor;
-				var zArrayTimeObs;
-				var zArrayTimePre;
-				var zArrayTimeNon;
-				var zArrayTimeFor;
-
-				fetch(url)
-				.then(x => x.text())
-				.then(function(response){
-					let parser = new DOMParser();
-					let xml = parser.parseFromString(response, "text/xml");
-					let countObs = xml.evaluate('count(/tide/locationdata/data[position()=1]/*)', xml, null, XPathResult.ANY_TYPE, null).numberValue;
-					let countPre = xml.evaluate('count(/tide/locationdata/data[position()=2]/*)', xml, null, XPathResult.ANY_TYPE, null).numberValue;
-					let countNone = xml.evaluate('count(/tide/locationdata/data[position()=3]/*)', xml, null, XPathResult.ANY_TYPE, null).numberValue;
-					let countForecast = xml.evaluate('count(/tide/locationdata/data[position()=4]/*)', xml, null, XPathResult.ANY_TYPE, null).numberValue;
-
-					zArrayObs = Array(countObs);
-					zArrayPre = Array(countPre);
-					zArrayNon = Array(countNone);
-					zArrayFor = Array(countForecast);
-					zArrayTimeObs = Array(countObs);
-					zArrayTimePre = Array(countPre);
-					zArrayTimeNon = Array(countNone);
-					zArrayTimeFor = Array(countForecast);
-
-					for (i = 1; i <= countObs; i++) {
-						zArrayObs[i-1] = Number(xml.evaluate('/tide/locationdata/data[position()=1]/waterlevel[position()=' + i + ']/@value', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent);
-						zArrayTimeObs[i-1] = xml.evaluate('/tide/locationdata/data[position()=1]/waterlevel[position()=' + i + ']/@time', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent;
-					}
-
-					for (i = 1; i <= countPre; i++) {
-						zArrayPre[i-1] = Number(xml.evaluate('/tide/locationdata/data[position()=2]/waterlevel[position()=' + i + ']/@value', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent);
-						zArrayTimePre[i-1] = xml.evaluate('/tide/locationdata/data[position()=2]/waterlevel[position()=' + i + ']/@time', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent;
-					}
-
-					for (i = 1; i <= countNone; i++) {
-						zArrayNon[i-1] = Number(xml.evaluate('/tide/locationdata/data[position()=3]/waterlevel[position()=' + i + ']/@value', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent);
-						zArrayTimeNon[i-1] = xml.evaluate('/tide/locationdata/data[position()=1]/waterlevel[position()=' + i + ']/@time', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent;
-					}
-
-					for (i = 1; i <= countForecast; i++) {
-						zArrayFor[i-1] = Number(xml.evaluate('/tide/locationdata/data[position()=4]/waterlevel[position()=' + i + ']/@value', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent);
-						zArrayTimeFor[i-1] = xml.evaluate('/tide/locationdata/data[position()=4]/waterlevel[position()=' + i + ']/@time', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent;
-					}
-
-					var data = new google.visualization.DataTable();
-
-					data.addColumn('datetime', 'tid');
-					data.addColumn('number', 'Observert');
-					data.addColumn('number', 'Teoretisk uten vind');
-					data.addColumn('number', 'Meldt vannstand');
-					data.addColumn('number', 'Værbidrag');
-
-					for(i = 0; i < zArrayObs.length; i++)
-					data.addRow([new Date(zArrayTimeObs[i]), zArrayObs[i], null, null, null]);
-
-					for(i = 0; i < zArrayFor.length; i++)
-					data.addRow([new Date(zArrayTimeFor[i]), null, null, zArrayFor[i], null]);
-
-					for(i = 0; i < zArrayNon.length; i++)
-					data.addRow([new Date(zArrayTimeNon[i]), null, null, null, zArrayNon[i]]);
-
-					for(i = 0; i < zArrayPre.length; i++)
-					data.addRow([new Date(zArrayTimePre[i]), null, zArrayPre[i], null, null]);
-
-	        var options = {
-	          title: 'Tidevannsnivå',
-	          hAxis: {
-							title: 'Neste døgn',
-							titleTextStyle: {color: '#ff0000'},
-							gridlines: {color: '#550000'},
-							baselineColor: {color:'#550000'},
-							textStyle:{color: '#ff0000'},
-							format: 'HH:mm'
-						},
-						vAxis: {
-							title: 'Meter over sjøkartnull',
-							titleTextStyle: {color: '#ff0000'},
-							gridlines: {color: '#550000'},
-							baselineColor: {color:'#550000'},
-							textStyle:{color: '#ff0000'}
-						},
-						legend: {
-							position: 'bottom',
-							textStyle: {color: '#ff0000'}
-						},
-						tooltip: {
-							boxStyle: {
-								stroke: '#000000',
-								strokeWidth: 2,
-							}
-						},
-						pointSize: 3,
-						backgroundColor: '#000000',
-						colors:['#ff0000','#884400','#660000', '#ffaa00']
-	        };
-
-	        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
-	        chart.draw(data, options);
-				});
-  		}
-		</script>
-		<script src="proj4.js">							// Javascript for konvertering fra UTM async	</script>
-		<script src="mgrs.js"> 							// Javascript for konvertering fra MGRS				</script>
-		<script type="text/javascript">
-
-			function DMfromDMS() {
-				var degN= Number(document.getElementById("DMS").elements.namedItem("degN").value);
-				var minN= Number(document.getElementById("DMS").elements.namedItem("minN").value);
-				var secN= Number(document.getElementById("DMS").elements.namedItem("secN").value);
-				var SecInMinN = secN/60;
-				var minNewN = minN + SecInMinN;
-
-				var degE= Number(document.getElementById("DMS").elements.namedItem("degE").value);
-				var minE= Number(document.getElementById("DMS").elements.namedItem("minE").value);
-				var secE= Number(document.getElementById("DMS").elements.namedItem("secE").value);
-				var SecInMinE = secE/60;
-				var minNewE = minE + SecInMinE;
-
-				document.getElementById("resultatN").innerHTML = degN.toString() + "&deg " + minNewN.toFixed(3).toString() + "' " + document.getElementById("hemisphere3").value.substring(0,1).toUpperCase();
-				document.getElementById("resultatE").innerHTML = degE.toString() + "&deg " + minNewE.toFixed(3).toString() + "' " + document.getElementById("hemisphere4").value.substring(0,1).toUpperCase();
-
-				document.getElementById('cells_dd').style.backgroundColor='#101010';
-				document.getElementById('cells_dms').style.backgroundColor='#002200';
-				document.getElementById('cells_utm').style.backgroundColor='#101010';
-				document.getElementById('cells_mgrs').style.backgroundColor='#101010';
-
-				UpdateMap();
-			};
-			function DMfromDD() {
-				var degN = Number(document.getElementById("DD").elements.namedItem("degN").value);
-				var degE = Number(document.getElementById("DD").elements.namedItem("degE").value);
-
-				var degdecN = (degN - Math.floor(degN))*60;
-				var degdecE = (degE - Math.floor(degE))*60;
-
-				document.getElementById("resultatN").innerHTML = Math.floor(degN).toString() + "&deg " + degdecN.toFixed(3).toString() + "' " + document.getElementById("hemisphere1").value.substring(0,1).toUpperCase();
-				document.getElementById("resultatE").innerHTML = Math.floor(degE).toString() + "&deg " + degdecE.toFixed(3).toString() + "' " + document.getElementById("hemisphere2").value.substring(0,1).toUpperCase();
-
-				document.getElementById('cells_dd').style.backgroundColor='#002200';
-				document.getElementById('cells_dms').style.backgroundColor='#101010';
-				document.getElementById('cells_utm').style.backgroundColor='#101010';
-				document.getElementById('cells_mgrs').style.backgroundColor='#101010';
-
-				UpdateMap();
-			};
-			function DMfromUTM() {
-				var utm = "+proj=utm +zone=" + document.getElementById("UTM").elements.namedItem("zone").value;
-				var wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
-				var resultUTM = proj4(utm,wgs84,[Number(document.getElementById("UTM").elements.namedItem("northing").value),Number(document.getElementById("UTM").elements.namedItem("easting").value)]);
-
-				var degE = resultUTM.toString().substring(0,resultUTM.toString().indexOf(","));
-				var degN = resultUTM.toString().substring(resultUTM.toString().indexOf(",")+1,resultUTM.toString().length);
-
-				var degdecE = (degE - Math.floor(degE))*60;
-				var degdecN = (degN - Math.floor(degN))*60;
-
-				document.getElementById("resultatN").innerHTML = Math.floor(degN).toString() + "&deg " + degdecN.toFixed(3).toString() + "' " + document.getElementById("hemisphere1").value.substring(0,1).toUpperCase();
-				document.getElementById("resultatE").innerHTML = Math.floor(degE).toString() + "&deg " + degdecE.toFixed(3).toString() + "' " + document.getElementById("hemisphere2").value.substring(0,1).toUpperCase();
-
-				document.getElementById('cells_dd').style.backgroundColor='#101010';
-				document.getElementById('cells_dms').style.backgroundColor='#101010';
-				document.getElementById('cells_utm').style.backgroundColor='#002200';
-				document.getElementById('cells_mgrs').style.backgroundColor='#101010';
-
-				UpdateMap();
-			};
-			function DMfromMGRS() {
-				var resultMGRS = mgrs.toPoint(document.getElementById("MGRS").elements.namedItem("zone").value+document.getElementById("MGRS").elements.namedItem("zone2").value+document.getElementById("MGRS").elements.namedItem("easting").value+document.getElementById("MGRS").elements.namedItem("northing").value).toString();
-
-				var degE = resultMGRS.toString().substring(0,resultMGRS.toString().indexOf(","));
-				var degN = resultMGRS.toString().substring(resultMGRS.toString().indexOf(",")+1,resultMGRS.toString().length);
-
-				var degdecE = (degE - Math.floor(degE))*60;
-				var degdecN = (degN - Math.floor(degN))*60;
-
-				document.getElementById("resultatN").innerHTML = Math.floor(degN).toString() + "&deg " + degdecN.toFixed(3).toString() + "' N";
-				document.getElementById("resultatE").innerHTML = Math.floor(degE).toString() + "&deg " + degdecE.toFixed(3).toString() + "' Ø";
-
-				document.getElementById('cells_dd').style.backgroundColor='#101010';
-				document.getElementById('cells_dms').style.backgroundColor='#101010';
-				document.getElementById('cells_utm').style.backgroundColor='#101010';
-				document.getElementById('cells_mgrs').style.backgroundColor='#002200';
-
-				UpdateMap();
-			};
-			function UpdateMap() {
-				var source = "+proj=longlat +datum=WGS84 +no_defs ";
-				var dest = "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
-
-				var resultN = document.getElementById("resultatN").innerHTML;
-				var resultE = document.getElementById("resultatE").innerHTML;
-
-				var N_deg = resultN.substring(0,resultN.indexOf("°"));
-				var N_min = resultN.substring(resultN.indexOf(" ")+1, resultN.indexOf("'"));
-				var E_deg = resultE.substring(0,resultE.indexOf("°"));
-				var E_min = resultE.substring(resultE.indexOf(" ")+1, resultE.indexOf("'"));
-
-				var y_value = Number(N_deg) + Number(N_min)/60;
-				var x_value = Number(E_deg) + Number(E_min)/60;
-
-				var result = proj4(source, dest, [x_value, y_value]).toString();
-				var northing = result.toString().substring(0,result.toString().indexOf(","));
-				var easting = result.toString().substring(result.toString().indexOf(",")+1,result.toString().length);
-
-				var UTM33Lon = Math.round(northing); //norgeskart.no har byttet på aksene
-				var UTM33Lat  = Math.round(easting);
-
-				var Layer = document.getElementById("map_settings").elements.namedItem("map_type").value;
-
-				document.getElementById("map_area").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=" + Layer + "&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&markerLat=" + UTM33Lat + "&markerLon=" + UTM33Lon + "&type=1";
-				document.getElementById("map_area").parentNode.replaceChild(document.getElementById("map_area").cloneNode(), document.getElementById("map_area"));
-
-				drawChart();
-			};
-		</script>
-
+		<script src="https://www.gstatic.com/charts/loader.js"></script>		<!-- 		Goole Charts 		- used to display charts 											-->
+		<script src="proj4.js"></script>																		<!-- 		Proj4js					- used to convert UTM 												-->
+		<script src="mgrs.js"></script>																			<!-- 		mgrs						- convertion to MGRS 													-->
+		<script src="javascript.js"></script>																<!--	 	javascript			- general script used throughout the site 		-->
 	</body>
 </html>
