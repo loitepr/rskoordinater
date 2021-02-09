@@ -1,5 +1,6 @@
 google.charts.load('current', {'packages':['corechart', 'scatter']});
-google.charts.setOnLoadCallback(UpdateMapLocation);
+google.charts.setOnLoadCallback(DrawTideChart);
+google.charts.setOnLoadCallback(DrawWeatherChart);
 document.getElementById("defaultSelected").click();
 
 function DMfromDMS() {
@@ -39,11 +40,6 @@ function DMfromDM() {
   var degE = Number(document.getElementById("DM").elements.namedItem("degE").value);
   var degdecN = Number(document.getElementById("DM").elements.namedItem("minN").value);
   var degdecE = Number(document.getElementById("DM").elements.namedItem("minE").value);
-
-  console.log(degN);
-  console.log(degE);
-  console.log(degdecN);
-  console.log(degdecE);
 
   document.getElementById("resultatN").innerHTML = Math.floor(degN).toString() + "&deg " + degdecN.toFixed(3).toString() + "' " + document.getElementById("hemisphere5").value.substring(0,1).toUpperCase();
   document.getElementById("resultatE").innerHTML = Math.floor(degE).toString() + "&deg " + degdecE.toFixed(3).toString() + "' " + document.getElementById("hemisphere6").value.substring(0,1).toUpperCase();
@@ -86,6 +82,7 @@ function DMfromMGRS() {
 function UpdateData() {
   UpdateMapLocation();
   DrawTideChart();
+  DrawWeatherChart();
 };
 
 function UpdateMapLocation() {
@@ -215,7 +212,6 @@ function DrawTideChart() {
       var options = {
         title: 'Tidevannsnivå',
         hAxis: {
-          title: 'Neste døgn',
           titleTextStyle: {color: '#ff0000'},
           gridlines: {color: '#550000'},
           baselineColor: {color:'#550000'},
@@ -272,4 +268,102 @@ function OpenTab(evt, cityName) {
 
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
+}
+
+function DrawWeatherChart() {
+  var source = "+proj=longlat +datum=WGS84 +no_defs ";
+  var dest = "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
+
+  var resultN = document.getElementById("resultatN").innerHTML;
+  var resultE = document.getElementById("resultatE").innerHTML;
+
+  var N_deg = resultN.substring(0,resultN.indexOf("°"));
+  var N_min = resultN.substring(resultN.indexOf(" ")+1, resultN.indexOf("'"));
+  var E_deg = resultE.substring(0,resultE.indexOf("°"));
+  var E_min = resultE.substring(resultE.indexOf(" ")+1, resultE.indexOf("'"));
+
+  var y_value = Number(N_deg) + Number(N_min)/60;
+  var x_value = Number(E_deg) + Number(E_min)/60;
+
+  function pad(n){return n<10 ? '0'+n : n}
+
+  var url = "https://api.met.no/weatherapi/oceanforecast/0.9/?lat=" + y_value + "&lon=" + x_value;
+  var zArrayObs;
+  var zArrayPre;
+  var zArrayNon;
+  var zArrayFor;
+  var zArrayTimeObs;
+  var zArrayTimePre;
+  var zArrayTimeNon;
+  var zArrayTimeFor;
+
+  fetch(url)
+  .then(x => x.text())
+  .then(function(response){
+    let parser = new DOMParser();
+    let xml = parser.parseFromString(response, "application/xml");
+    let nsResolver = xml.createNSResolver (xml.documentElement);
+    let count = xml.evaluate("count(//mox:significantTotalWaveHeight)", xml, nsResolver, XPathResult.ANY_TYPE, null).numberValue;
+
+    zArrayWave = Array(count);
+    zArrayTimeWave = Array(count);
+
+    for (i = 1; i <= count; i++) {
+      zArrayWave[i-1] = Number(xml.evaluate('(//mox:significantTotalWaveHeight)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent);
+      zArrayTimeWave[i-1] = xml.evaluate('(//gml:begin)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent;
+    }
+
+    var data = new google.visualization.DataTable();
+
+    data.addColumn('datetime', 'tid');
+    data.addColumn('number', 'Bølgehøyde');
+
+    for(i = 0; i < zArrayWave.length; i++)
+    data.addRow([new Date(zArrayTimeWave[i]), zArrayWave[i]]);
+
+    var options = {
+      title: 'Tidevannsnivå',
+      hAxis: {
+        titleTextStyle: {color: '#ff0000'},
+        gridlines: {color: '#550000'},
+        baselineColor: {color:'#550000'},
+        textStyle:{color: '#ff0000'},
+        format: 'HH:mm'
+      },
+      vAxis: {
+        title: 'Bølgehøyde',
+        titleTextStyle: {color: '#ff0000'},
+        gridlines: {color: '#550000'},
+        baselineColor: {color:'#550000'},
+        textStyle:{color: '#ff0000'}
+      },
+      legend: {
+        position: 'hidden',
+        textStyle: {color: '#ff0000'}
+      },
+      tooltip: {
+        boxStyle: {
+          stroke: '#000000',
+          strokeWidth: 2,
+        }
+      },
+      pointSize: 3,
+      backgroundColor: '#000000',
+      colors:[
+        '#ff0000',
+        '#884400',
+        '#660000',
+        '#ffaa00'],
+      chartArea: {
+        left: 50,
+        right: 0
+      }
+    };
+
+    var chart = new google.visualization.ScatterChart(document.getElementById('chart_wave'));
+    chart.draw(data, options);
+  });
+
+
+
 }
