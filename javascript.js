@@ -10,6 +10,21 @@ var zArrayTimeWave = Array;
 
 var zN, zE;
 
+if (navigator.geolocation) {
+  navigator.geolocation.watchPosition(getPosition);}
+else {
+  document.getElementByID("map_distance").innerHTML = "Du må dele posisjonen din for å måle avstand."; };
+
+function getPosition(position) {
+  console.log("pos changed");
+  let zDistance = getDistanceFromLatLonInKm(zN, zE, position.coords.latitude, position.coords.longitude);
+  let zTTG = (zDistance/30)*60;
+
+  document.getElementById("map_distance").innerHTML = "DTG: " + Math.round(zDistance, 2) + " nautiske mil.<br>TTG: " + Math.round(zTTG, 0) + " min i 30 knop."
+
+  setTimeout(getPosition, 2000);
+};
+
 function DMfromDMS() {
   var degN= Number(document.getElementById("DMS").elements.namedItem("degN").value);
   var minN= Number(document.getElementById("DMS").elements.namedItem("minN").value);
@@ -115,21 +130,6 @@ function UpdateMapLocation() {
 
   document.getElementById("map_area").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=" + Layer + "&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&markerLat=" + UTM33Lat + "&markerLon=" + UTM33Lon + "&type=1";
   document.getElementById("map_area").parentNode.replaceChild(document.getElementById("map_area").cloneNode(), document.getElementById("map_area"));
-
-  if (navigator.geolocation) {
-  	navigator.geolocation.watchPosition(getPosition);}
-  else {
-    document.getElementByID("map_distance").innerHTML = "Du må dele posisjonen din for å måle avstand."; };
-};
-
-function getPosition(position) {
-  console.log("pos changed");
-  let zDistance = getDistanceFromLatLonInKm(zN, zE, position.coords.latitude, position.coords.longitude);
-  let zTTG = (zDistance/30)*60;
-
-  document.getElementById("map_distance").innerHTML = "DTG: " + Math.round(zDistance, 2) + " nautiske mil.<br>TTG: " + Math.round(zTTG, 0) + " min i 30 knop."
-
-  setTimeout(getPosition, 2000);
 };
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
