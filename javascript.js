@@ -2,6 +2,10 @@ google.charts.load('current', {'packages':['corechart', 'scatter']});
 google.charts.setOnLoadCallback(DrawTideChart);
 google.charts.setOnLoadCallback(DrawWeatherChart);
 document.getElementById("defaultSelected").click();
+var zArrayWind = Array;
+var zArrayTimeWind = Array;
+var zArrayWave = Array;
+var zArrayTimeWave = Array;
 
 function DMfromDMS() {
   var degN= Number(document.getElementById("DMS").elements.namedItem("degN").value);
@@ -219,7 +223,6 @@ function DrawTideChart() {
           format: 'HH:mm'
         },
         vAxis: {
-          title: 'Meter over sjøkartnull',
           titleTextStyle: {color: '#ff0000'},
           gridlines: {color: '#550000'},
           baselineColor: {color:'#550000'},
@@ -239,7 +242,7 @@ function DrawTideChart() {
         backgroundColor: '#000000',
         colors:[
           '#ff0000',
-          '#884400',
+          '#bb7700',
           '#660000',
           '#ffaa00'],
         chartArea: {
@@ -281,38 +284,28 @@ function OpenTab(evt, cityName) {
 function DrawWeatherChart() {
   var source = "+proj=longlat +datum=WGS84 +no_defs ";
   var dest = "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
-
   var resultN = document.getElementById("resultatN").innerHTML;
   var resultE = document.getElementById("resultatE").innerHTML;
-
   var N_deg = resultN.substring(0,resultN.indexOf("°"));
   var N_min = resultN.substring(resultN.indexOf(" ")+1, resultN.indexOf("'"));
   var E_deg = resultE.substring(0,resultE.indexOf("°"));
   var E_min = resultE.substring(resultE.indexOf(" ")+1, resultE.indexOf("'"));
-
   var y_value = Number(N_deg) + Number(N_min)/60;
   var x_value = Number(E_deg) + Number(E_min)/60;
+  var urlTide = "https://api.met.no/weatherapi/oceanforecast/0.9/?lat=" + y_value + "&lon=" + x_value;
+  var urlWeather = "https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=" + y_value + "&lon=" + x_value;
+  var data = new google.visualization.DataTable();
+  var zArrayWave;
+  var zArrayTimeWave;
 
-  function pad(n){return n<10 ? '0'+n : n}
-
-  var url = "https://api.met.no/weatherapi/oceanforecast/0.9/?lat=" + y_value + "&lon=" + x_value;
-  var zArrayObs;
-  var zArrayPre;
-  var zArrayNon;
-  var zArrayFor;
-  var zArrayTimeObs;
-  var zArrayTimePre;
-  var zArrayTimeNon;
-  var zArrayTimeFor;
-
-  fetch(url)
+  fetch(urlTide)
   .then(x => x.text())
   .then(function(response){
     let parser = new DOMParser();
     let xml = parser.parseFromString(response, "application/xml");
     let nsResolver = xml.createNSResolver (xml.documentElement);
     let count = xml.evaluate("count(//mox:significantTotalWaveHeight)", xml, nsResolver, XPathResult.ANY_TYPE, null).numberValue;
-
+      count = 24;
     zArrayWave = Array(count);
     zArrayTimeWave = Array(count);
 
@@ -321,57 +314,80 @@ function DrawWeatherChart() {
       zArrayTimeWave[i-1] = xml.evaluate('(//gml:begin)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent;
     }
 
-    var data = new google.visualization.DataTable();
+    fetch(urlWeather)
+    .then(res => res.json())
+    .then((resultJSON) => {
+      zArrayWind = Array(count);
+      zArrayTimeWind = Array(count);
 
-    data.addColumn('datetime', 'tid');
-    data.addColumn('number', 'Bølgehøyde');
-
-    for(i = 0; i < zArrayWave.length; i++)
-    data.addRow([new Date(zArrayTimeWave[i]), zArrayWave[i]]);
-
-    var options = {
-      title: 'Tidevannsnivå',
-      hAxis: {
-        titleTextStyle: {color: '#ff0000'},
-        gridlines: {color: '#550000'},
-        baselineColor: {color:'#550000'},
-        textStyle:{color: '#ff0000'},
-        format: 'HH:mm'
-      },
-      vAxis: {
-        title: 'Bølgehøyde',
-        titleTextStyle: {color: '#ff0000'},
-        gridlines: {color: '#550000'},
-        baselineColor: {color:'#550000'},
-        textStyle:{color: '#ff0000'}
-      },
-      legend: {
-        position: 'hidden',
-        textStyle: {color: '#ff0000'}
-      },
-      tooltip: {
-        boxStyle: {
-          stroke: '#000000',
-          strokeWidth: 2,
-        }
-      },
-      pointSize: 3,
-      backgroundColor: '#000000',
-      colors:[
-        '#ff0000',
-        '#884400',
-        '#660000',
-        '#ffaa00'],
-      chartArea: {
-        left: 50,
-        right: 0
+      for (i = 0; i <= count-1; i++) {
+        zArrayWind[i] = resultJSON.properties.timeseries[i].data.instant.details.wind_speed;
+        zArrayTimeWind[i] = resultJSON.properties.timeseries[i].time;
       }
-    };
 
-    var chart = new google.visualization.LineChart(document.getElementById('chart_wave'));
-    chart.draw(data, options);
+      data.addColumn('datetime', 'tid');
+      data.addColumn('number', 'Bølgehøyde');
+      data.addColumn('number', 'Vindstyrke');
+
+      for(i = 0; i < zArrayWave.length; i++)
+      data.addRow([new Date(zArrayTimeWave[i]), zArrayWave[i], null]);
+
+      for(i = 0; i < zArrayWind.length; i++)
+      data.addRow([new Date(zArrayTimeWind[i]), null, zArrayWind[i]]);
+
+      var options = {
+        title: 'Tidevannsnivå',
+        hAxis: {
+          titleTextStyle: {color: '#ff0000'},
+          gridlines: {color: '#550000'},
+          baselineColor: {color:'#550000'},
+          textStyle:{color: '#ff0000'},
+          format: 'HH:mm',
+          showTextEvery: 2
+        },
+        vAxis: {
+          titleTextStyle: {color: '#ff0000'},
+          gridlines: {color: '#550000'},
+          baselineColor: {color:'#550000'},
+          textStyle: {color: '#ff0000'}
+        },
+
+        series: {
+          0: {targetAxisIndex:0},
+          1: {targetAxisIndex:1}
+        },
+        legend: {
+          position: 'bottom',
+          textStyle: {color: '#ff0000'}
+        },
+        tooltip: {
+          boxStyle: {
+            stroke: '#000000',
+            strokeWidth: 2,
+          }
+        },
+        axes: {
+          y: {
+            0: {label: 'Bølgehøyde'},
+            1: {title: 'Vindstyrke'}
+          }
+        },
+        pointSize: 3,
+        backgroundColor: '#000000',
+        colors:[
+          '#ff0000',
+          '#bb7700',
+          '#660000',
+          '#ffaa00'],
+        chartArea: {
+          left: 50,
+          right: 50
+        },
+        curveType: 'function',
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_wave'));
+      chart.draw(data, options);
+    });
   });
-
-
-
-}
+};
