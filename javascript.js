@@ -129,7 +129,7 @@ function getPosition(position) {
 
   document.getElementById("map_distance").innerHTML = "DTG: " + Math.round(zDistance, 2) + " nautiske mil.<br>TTG: " + Math.round(zTTG, 0) + " min i 30 knop."
 
-  setTimeout(getPosition, 5000);
+  setTimeout(getPosition, 2000);
 };
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
