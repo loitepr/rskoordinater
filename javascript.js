@@ -266,7 +266,7 @@ function DrawTideChart() {
             strokeWidth: 2,
           }
         },
-        pointSize: 6,
+        pointSize: 0,
         backgroundColor: '#000000',
         colors:[
           '#ff0000',
@@ -286,14 +286,6 @@ function DrawTideChart() {
 
       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
       chart.draw(data, options);
-
-      //function resize () {
-      //  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-      //  chart.draw(data, options);
-      //}
-      //
-      //window.onload = resize;
-      //window.onresize = resize;
     });
   };
 
@@ -439,7 +431,7 @@ function DrawWeatherChart() {
             2: {title: 'Vindkast'}
           }
         },
-        pointSize: 6,
+        pointSize: 0,
         backgroundColor: '#000000',
         colors:[
           '#ff0000',
