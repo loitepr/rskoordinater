@@ -1,11 +1,29 @@
 google.charts.load('current', {'packages':['corechart', 'scatter']});
 google.charts.setOnLoadCallback(DrawTideChart);
 google.charts.setOnLoadCallback(DrawWeatherChart);
-document.getElementById("defaultSelected").click();
+document.getElementById("GeolocationOK").click();
+
 var zArrayWind = Array;
 var zArrayTimeWind = Array;
 var zArrayWave = Array;
 var zArrayTimeWave = Array;
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    console.log("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  //document.getElementByID("GeolocationOK").click();
+  document.getElementById("DD").elements.namedItem("degN").value = position.coords.latitude;
+  document.getElementById("DD").elements.namedItem("degE").value = position.coords.longitude;
+  DMfromDD();
+}
+
+getLocation();
 
 function DMfromDMS() {
   var degN= Number(document.getElementById("DMS").elements.namedItem("degN").value);
@@ -297,6 +315,8 @@ function DrawWeatherChart() {
   var data = new google.visualization.DataTable();
   var zArrayWave;
   var zArrayTimeWave;
+  let WaveOK = false;
+  let WeatherOK = false;
 
   fetch(urlTide)
   .then(x => x.text())
@@ -309,10 +329,15 @@ function DrawWeatherChart() {
     zArrayWave = Array(count);
     zArrayTimeWave = Array(count);
 
-    for (i = 1; i <= count; i++) {
-      zArrayWave[i-1] = Number(xml.evaluate('(//mox:significantTotalWaveHeight)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent);
-      zArrayTimeWave[i-1] = xml.evaluate('(//gml:begin)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent;
-    }
+    try {
+      for (i = 1; i <= count; i++) {
+        zArrayWave[i-1] = Number(xml.evaluate('(//mox:significantTotalWaveHeight)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent);
+        zArrayTimeWave[i-1] = xml.evaluate('(//gml:begin)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent;
+      }
+      WaveOK = true;
+    } catch (e) {
+        console.log("Failed fetching wave height");
+    };
 
     fetch(urlWeather)
     .then(res => res.json())
@@ -320,20 +345,29 @@ function DrawWeatherChart() {
       zArrayWind = Array(count);
       zArrayTimeWind = Array(count);
 
-      for (i = 0; i <= count-1; i++) {
+      try {
+        for (i = 0; i <= count-1; i++) {
         zArrayWind[i] = resultJSON.properties.timeseries[i].data.instant.details.wind_speed;
         zArrayTimeWind[i] = resultJSON.properties.timeseries[i].time;
-      }
+        }
+        WeatherOK = true;
+      } catch (e) {
+          console.log("Failed fetching weather");
+      };
 
       data.addColumn('datetime', 'tid');
       data.addColumn('number', 'Bølgehøyde');
       data.addColumn('number', 'Vindstyrke');
 
-      for(i = 0; i < zArrayWave.length; i++)
-      data.addRow([new Date(zArrayTimeWave[i]), zArrayWave[i], null]);
+      if (WaveOK) {
+        for(i = 0; i < zArrayWave.length; i++)
+          data.addRow([new Date(zArrayTimeWave[i]), zArrayWave[i], null]);
+      };
 
-      for(i = 0; i < zArrayWind.length; i++)
-      data.addRow([new Date(zArrayTimeWind[i]), null, zArrayWind[i]]);
+      if (WeatherOK) {
+        for(i = 0; i < zArrayWind.length; i++)
+          data.addRow([new Date(zArrayTimeWind[i]), null, zArrayWind[i]]);
+      };
 
       var options = {
         title: 'Tidevannsnivå',
