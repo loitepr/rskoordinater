@@ -5,11 +5,11 @@ body {
   color: red;
   background-color:  black;
 }
-input, select, button {
+input, select, button, option {
   color: red;
   background-color: black;
   font-size: 30px;
-  width: 150px;
+  width: 200px;
   text-align: center;
   border-style:solid;
   border-color: darkred;
@@ -63,6 +63,7 @@ table {
   border: 0px;
   border-top: none;
   text-align: center;
+  height: 300px;
 }
 
 .tabcontent {
