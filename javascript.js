@@ -8,23 +8,6 @@ var zArrayTimeWind = Array;
 var zArrayWave = Array;
 var zArrayTimeWave = Array;
 
-var zN, zE;
-
-if (navigator.geolocation) {
-  navigator.geolocation.watchPosition(getPosition);}
-else {
-  document.getElementByID("map_distance").innerHTML = "Du må dele posisjonen din for å måle avstand."; };
-
-function getPosition(position) {
-  console.log("pos changed");
-  let zDistance = getDistanceFromLatLonInKm(zN, zE, position.coords.latitude, position.coords.longitude);
-  let zTTG = (zDistance/30)*60;
-
-  document.getElementById("map_distance").innerHTML = "DTG: " + Math.round(zDistance, 2) + " nautiske mil.<br>TTG: " + Math.round(zTTG, 0) + " min i 30 knop."
-
-  setTimeout(getPosition, 2000);
-};
-
 function DMfromDMS() {
   var degN= Number(document.getElementById("DMS").elements.namedItem("degN").value);
   var minN= Number(document.getElementById("DMS").elements.namedItem("minN").value);
@@ -247,7 +230,14 @@ function DrawTideChart() {
       data.addRow([new Date(zArrayTimePre[i]), null, zArrayPre[i], null, null]);
 
       var options = {
-        title: 'Tidevannsnivå',
+        title: 'Tidevann',
+        titleTextStyle: {
+          color: '#ff0000',
+          fontSize: 24,
+          fontName: 'Arial',
+          bold: true,
+          italic: false
+        },
         hAxis: {
           titleTextStyle: {color: '#ff0000'},
           gridlines: {color: '#550000'},
@@ -263,7 +253,9 @@ function DrawTideChart() {
         },
         legend: {
           position: 'bottom',
-          textStyle: {color: '#ff0000'}
+          textStyle: {
+            color: '#ff0000',
+            fontSize: 24 }
         },
         tooltip: {
           boxStyle: {
@@ -281,7 +273,12 @@ function DrawTideChart() {
         chartArea: {
           left: 50,
           right: 0
-        }
+        },
+        animation: {
+          duration: 1000,
+          easing: 'out',
+          "startup": true
+        },
       };
 
       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
@@ -385,7 +382,14 @@ function DrawWeatherChart() {
       };
 
       var options = {
-        title: 'Tidevannsnivå',
+        title: 'Bølgehøyde og vindstyrke',
+        titleTextStyle: {
+          color: '#ff0000',
+          fontSize: 24,
+          fontName: 'Arial',
+          bold: true,
+          italic: false
+        },
         hAxis: {
           titleTextStyle: {color: '#ff0000'},
           gridlines: {color: '#550000'},
@@ -407,7 +411,9 @@ function DrawWeatherChart() {
         },
         legend: {
           position: 'bottom',
-          textStyle: {color: '#ff0000'}
+          textStyle: {
+            color: '#ff0000',
+            fontSize: 24 }
         },
         tooltip: {
           boxStyle: {
@@ -432,7 +438,11 @@ function DrawWeatherChart() {
           left: 50,
           right: 50
         },
-        curveType: 'function',
+        animation: {
+          duration: 1000,
+          easing: 'out',
+          "startup": true
+        },
       };
 
       var chart = new google.visualization.LineChart(document.getElementById('chart_wave'));
@@ -440,3 +450,23 @@ function DrawWeatherChart() {
     });
   });
 };
+
+
+//console.log(zN);
+//console.log(zE);
+//console.log(position.coords.latitude);
+//console.log(position.coords.longitude);
+//
+//var resultN = document.getElementById("resultatN").innerHTML;
+//var resultE = document.getElementById("resultatE").innerHTML;
+//var N_deg = resultN.substring(0,resultN.indexOf("°"));
+//var N_min = resultN.substring(resultN.indexOf(" ")+1, resultN.indexOf("'"));
+//var E_deg = resultE.substring(0,resultE.indexOf("°"));
+//var E_min = resultE.substring(resultE.indexOf(" ")+1, resultE.indexOf("'"));
+//zN = Number(N_deg) + Number(N_min)/60;
+//zE = Number(E_deg) + Number(E_min)/60;
+//
+//let zDistance = getDistanceFromLatLonInKm(zN, zE, position.coords.latitude, position.coords.longitude);
+//let zTTG = (zDistance/30)*60;
+//
+//document.getElementById("map_distance").innerHTML = "DTG: " + Math.round(zDistance, 2) + " nautiske mil.<br>TTG: " + Math.round(zTTG, 0) + " min. i 30 knop."
