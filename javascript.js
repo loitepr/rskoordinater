@@ -126,7 +126,7 @@ function getPosition(position) {
   let zDistance = getDistanceFromLatLonInKm(zN, zE, position.coords.latitude, position.coords.longitude);
   let zTTG = (zDistance/30)*60;
 
-  document.getElementById("map_distance").innerHTML = "Distanse fra din posisjon (i rett linje) er " + zDistance + " nautiske mil.<br>I 30 knop er TTG da " + zTTG + " minutter."
+  document.getElementById("map_distance").innerHTML = "DTG: " + Math.round(zDistance, 2) + " nautiske mil.<br>TTG: " + Math.round(zTTG, 0) + " min i 30 knop."
 };
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
