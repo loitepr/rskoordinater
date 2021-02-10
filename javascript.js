@@ -8,20 +8,7 @@ var zArrayTimeWind = Array;
 var zArrayWave = Array;
 var zArrayTimeWave = Array;
 
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else {
-    console.log("Geolocation is not supported by this browser.");
-  }
-}
-
-function showPosition(position) {
-  //document.getElementByID("GeolocationOK").click();
-  document.getElementById("DD").elements.namedItem("degN").value = position.coords.latitude;
-  document.getElementById("DD").elements.namedItem("degE").value = position.coords.longitude;
-  DMfromDD();
-}
+var zN, zE;
 
 function DMfromDMS() {
   var degN= Number(document.getElementById("DMS").elements.namedItem("degN").value);
@@ -108,30 +95,57 @@ function UpdateData() {
 function UpdateMapLocation() {
   var source = "+proj=longlat +datum=WGS84 +no_defs ";
   var dest = "+proj=utm +zone=33 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
-
   var resultN = document.getElementById("resultatN").innerHTML;
   var resultE = document.getElementById("resultatE").innerHTML;
-
   var N_deg = resultN.substring(0,resultN.indexOf("°"));
   var N_min = resultN.substring(resultN.indexOf(" ")+1, resultN.indexOf("'"));
   var E_deg = resultE.substring(0,resultE.indexOf("°"));
   var E_min = resultE.substring(resultE.indexOf(" ")+1, resultE.indexOf("'"));
-
   var y_value = Number(N_deg) + Number(N_min)/60;
   var x_value = Number(E_deg) + Number(E_min)/60;
-
   var result = proj4(source, dest, [x_value, y_value]).toString();
   var northing = result.toString().substring(0,result.toString().indexOf(","));
   var easting = result.toString().substring(result.toString().indexOf(",")+1,result.toString().length);
-
   var UTM33Lon = Math.round(northing); //norgeskart.no har byttet på aksene
   var UTM33Lat  = Math.round(easting);
-
   var Layer = document.getElementById("map_settings").elements.namedItem("map_type").value;
+
+  zN = y_value;
+  zE = x_value;
 
   document.getElementById("map_area").src = "https://www.norgeskart.no/#!?project=norgeskart&layers=" + Layer + "&zoom=13&lat=" + UTM33Lat + "&lon=" + UTM33Lon + "&markerLat=" + UTM33Lat + "&markerLon=" + UTM33Lon + "&type=1";
   document.getElementById("map_area").parentNode.replaceChild(document.getElementById("map_area").cloneNode(), document.getElementById("map_area"));
-}
+
+  if (navigator.geolocation) {
+  	navigator.geolocation.watchPosition(getPosition); }
+  else {
+    document.getElementByID("map_distance").innerHTML = "Du må dele posisjonen din for å måle avstand."; };
+};
+
+function getPosition(position) {
+  let zDistance = getDistanceFromLatLonInKm(zN, zE, position.coords.latitude, position.coords.longitude);
+  let zTTG = (zDistance/30)*60;
+
+  document.getElementById("map_distance").innerHTML = "Distanse fra din posisjon (i rett linje) er " + zDistance + " nautiske mil.<br>I 30 knop er TTG da " + zTTG + " minutter."
+};
+
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1);
+  var a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ;
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c; // Distance in km
+  return d;
+};
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+};
 
 function DrawTideChart() {
   var source = "+proj=longlat +datum=WGS84 +no_defs ";
