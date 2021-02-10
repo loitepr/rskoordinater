@@ -5,6 +5,8 @@ document.getElementById("GeolocationOK").click();
 
 var zArrayWind = Array;
 var zArrayTimeWind = Array;
+var zArrayWindGusts = Array;
+var zArrayTimeWindGusts = Array;
 var zArrayWave = Array;
 var zArrayTimeWave = Array;
 
@@ -231,6 +233,7 @@ function DrawTideChart() {
 
       var options = {
         title: 'Tidevann',
+        lineWidth: 4,
         titleTextStyle: {
           color: '#ff0000',
           fontSize: 24,
@@ -263,7 +266,7 @@ function DrawTideChart() {
             strokeWidth: 2,
           }
         },
-        pointSize: 3,
+        pointSize: 6,
         backgroundColor: '#000000',
         colors:[
           '#ff0000',
@@ -355,14 +358,17 @@ function DrawWeatherChart() {
     .then(res => res.json())
     .then((resultJSON) => {
       zArrayWind = Array(count);
-      zArrayTimeWind = Array(count);
+      zArrayWindGusts = Array(count);
+      zArrayTimeWindGusts = Array(count);
 
       try {
         for (i = 0; i <= count-1; i++) {
-        zArrayWind[i] = resultJSON.properties.timeseries[i].data.instant.details.wind_speed;
-        zArrayTimeWind[i] = resultJSON.properties.timeseries[i].time;
+          zArrayWind[i] = resultJSON.properties.timeseries[i].data.instant.details.wind_speed;
+          zArrayTimeWind[i] = resultJSON.properties.timeseries[i].time;
+          zArrayWindGusts[i] = resultJSON.properties.timeseries[i].data.instant.details.wind_speed_of_gust;
+          zArrayTimeWindGusts[i] = resultJSON.properties.timeseries[i].time;
+          WeatherOK = true;
         }
-        WeatherOK = true;
       } catch (e) {
           console.log("Failed fetching weather");
       };
@@ -370,19 +376,23 @@ function DrawWeatherChart() {
       data.addColumn('datetime', 'tid');
       data.addColumn('number', 'Bølgehøyde');
       data.addColumn('number', 'Vindstyrke');
+      data.addColumn('number', 'Vindkast');
 
       if (WaveOK) {
         for(i = 0; i < zArrayWave.length; i++)
-          data.addRow([new Date(zArrayTimeWave[i]), zArrayWave[i], null]);
+          data.addRow([new Date(zArrayTimeWave[i]), zArrayWave[i], null, null]);
       };
 
       if (WeatherOK) {
         for(i = 0; i < zArrayWind.length; i++)
-          data.addRow([new Date(zArrayTimeWind[i]), null, zArrayWind[i]]);
+          data.addRow([new Date(zArrayTimeWind[i]), null, zArrayWind[i], null]);
+        for(i = 0; i < zArrayWindGusts.length; i++)
+          data.addRow([new Date(zArrayTimeWindGusts[i]), null, null, zArrayWindGusts[i]]);
       };
 
       var options = {
         title: 'Bølgehøyde og vindstyrke',
+        lineWidth: 4,
         titleTextStyle: {
           color: '#ff0000',
           fontSize: 24,
@@ -407,7 +417,8 @@ function DrawWeatherChart() {
 
         series: {
           0: {targetAxisIndex:0},
-          1: {targetAxisIndex:1}
+          1: {targetAxisIndex:1},
+          2: {targetAxisIndex:1}
         },
         legend: {
           position: 'bottom',
@@ -424,15 +435,16 @@ function DrawWeatherChart() {
         axes: {
           y: {
             0: {label: 'Bølgehøyde'},
-            1: {title: 'Vindstyrke'}
+            1: {title: 'Vindstyrke'},
+            2: {title: 'Vindkast'}
           }
         },
-        pointSize: 3,
+        pointSize: 6,
         backgroundColor: '#000000',
         colors:[
           '#ff0000',
           '#bb7700',
-          '#660000',
+          '#995500',
           '#ffaa00'],
         chartArea: {
           left: 50,
