@@ -23,8 +23,6 @@ function showPosition(position) {
   DMfromDD();
 }
 
-getLocation();
-
 function DMfromDMS() {
   var degN= Number(document.getElementById("DMS").elements.namedItem("degN").value);
   var minN= Number(document.getElementById("DMS").elements.namedItem("minN").value);
