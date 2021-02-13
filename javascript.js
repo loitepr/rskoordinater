@@ -80,7 +80,7 @@ function fDrawChart_weather() {
       //  data.addRow([new Date(zArrayTimeWindDirection[i]), null, null, null, zArrayWindDirection[i]]);
 
       var options = {
-        title: 'Bølgehøyder og vind',
+        title: 'Bølgehøyde og vind',
         lineWidth: 4,
         titleTextStyle: {
           color: '#ff0000',
