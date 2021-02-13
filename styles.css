@@ -64,10 +64,11 @@ table {
   border-top: none;
   text-align: center;
   height: 300px;
+  animation: fadeEffect 1s;
 }
 
-.tabcontent {
-  animation: fadeEffect 1s;
+#defaultSelected {
+  display: block;
 }
 
 @keyframes fadeEffect {
