@@ -6,6 +6,8 @@ var zArrayWave = Array;
 var zArrayTimeWave = Array;
 var zArrayTide = Array;
 var zArrayTimeTide = Array;
+var zArrayWindDirection = Array;
+var zArrayTimeWindDirection = Array;
 var zOldN;
 var zOldE;
 
@@ -13,7 +15,7 @@ google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(fDrawChart_weather);
 google.charts.setOnLoadCallback(fDrawChart_tide);
 
-function fDrawChart_weather(fi_N, fi_E) {
+function fDrawChart_weather() {
   var resultN = document.getElementById("resultatN").innerHTML;
   var resultE = document.getElementById("resultatE").innerHTML;
   var N_deg = resultN.substring(0,resultN.indexOf("°"));
@@ -25,8 +27,7 @@ function fDrawChart_weather(fi_N, fi_E) {
   var data = new google.visualization.DataTable();
   var urlWeather = "https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=" + fi_N + "&lon=" + fi_E;
   var urlWaveheight = "https://api.met.no/weatherapi/oceanforecast/0.9/?lat=" + fi_N + "&lon=" + fi_E;
-console.log(urlWeather);
-console.log(urlWaveheight);
+
   fetch(urlWeather, {"User-Agent"   : "RS Koordinater at beta website. https://rskoordinater.vercel.app. Contact: opplaring.rsrk.kristiansand@rs.no"})
   .then(res => res.json())
   .then((resultJSON) => {
@@ -44,6 +45,8 @@ console.log(urlWaveheight);
       zArrayTimeWind = Array(count);
       zArrayWindGusts = Array(count);
       zArrayTimeWindGusts = Array(count);
+      zArrayWindDirection = Array(count);
+      zArrayTimeWindDirection = Array(count);
 
       for (i = 1; i <= count; i++) {
         zArrayWave[i-1] = Number(xml.evaluate('(//mox:significantTotalWaveHeight)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent);
@@ -55,24 +58,29 @@ console.log(urlWaveheight);
         zArrayTimeWind[i] = resultJSON.properties.timeseries[i].time;
         zArrayWindGusts[i] = resultJSON.properties.timeseries[i].data.instant.details.wind_speed_of_gust;
         zArrayTimeWindGusts[i] = resultJSON.properties.timeseries[i].time;
+        zArrayTimeWindDirection[i] = resultJSON.properties.timeseries[i].time;
+        zArrayWindDirection[i] = resultJSON.properties.timeseries[i].data.instant.details.wind_from_direction;
       }
-
       data.addColumn('datetime', 'tid');
       data.addColumn('number', 'Bølgehøyde');
       data.addColumn('number', 'Vindstyrke');
       data.addColumn('number', 'Vindkast');
+      data.addColumn('number', 'Vindretning');
 
       for(i = 0; i < zArrayWave.length; i++)
-        data.addRow([new Date(zArrayTimeWave[i]), zArrayWave[i], null, null]);
+        data.addRow([new Date(zArrayTimeWave[i]), zArrayWave[i], null, null, null]);
 
       for(i = 0; i < zArrayWind.length; i++)
-        data.addRow([new Date(zArrayTimeWind[i]), null, zArrayWind[i], null]);
+        data.addRow([new Date(zArrayTimeWind[i]), null, zArrayWind[i], null, null]);
 
       for(i = 0; i < zArrayWindGusts.length; i++)
-        data.addRow([new Date(zArrayTimeWindGusts[i]), null, null, zArrayWindGusts[i]]);
+        data.addRow([new Date(zArrayTimeWindGusts[i]), null, null, zArrayWindGusts[i], null]);
+
+      //for(i = 0; i < zArrayWindDirection.length; i++)
+      //  data.addRow([new Date(zArrayTimeWindDirection[i]), null, null, null, zArrayWindDirection[i]]);
 
       var options = {
-        title: 'Bølgehøyde og vindstyrke',
+        title: 'Bølgehøyder og vind',
         lineWidth: 4,
         titleTextStyle: {
           color: '#ff0000',
@@ -91,7 +99,7 @@ console.log(urlWaveheight);
         },
         vAxis: {
           titleTextStyle: {color: '#ff0000'},
-          gridlines: {color: '#550000'},
+          gridlines: {color: '#000000'},
           baselineColor: {color:'#550000'},
           textStyle: {color: '#ff0000'}
         },
@@ -117,23 +125,22 @@ console.log(urlWaveheight);
           y: {
             0: {label: 'Bølgehøyde'},
             1: {title: 'Vindstyrke'},
-            2: {title: 'Vindkast'}
           }
         },
-        pointSize: 0,
+        pointSize: 8,
         backgroundColor: '#000000',
         colors:[
           '#ff0000',
           '#bb7700',
-          '#995500',
-          '#ffaa00'],
+          '#660000',
+          '#443300'],
         chartArea: {
           left: 50,
           right: 50
         },
         animation: {
           duration: 1000,
-          easing: 'out',
+          easing: 'inAndOut',
           "startup": true
         },
       };
@@ -265,10 +272,10 @@ function fDrawChart_tide() {
         '#ff0000',
         '#bb7700',
         '#660000',
-        '#ffaa00'],
+        '#443300'],
       chartArea: {
         left: 50,
-        right: 0
+        right: 50,
       },
       animation: {
         duration: 1000,
