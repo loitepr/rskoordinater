@@ -25,6 +25,13 @@ table {
   border-spacing: 0 15px;
 }
 
+#logo {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: -1
+}
+
 .result {
   color: #ff0000;
   text-align: center;
@@ -35,7 +42,7 @@ table {
 .tab {
   overflow: hidden;
   border: 0px;
-  background-color: #000000;
+
 }
 
 .tab button {

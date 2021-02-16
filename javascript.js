@@ -93,13 +93,15 @@ function fDrawChart_weather() {
           titleTextStyle: {color: '#ff0000'},
           gridlines: {color: '#550000'},
           baselineColor: {color:'#550000'},
+          gridlines: {color: '#550000'},
+          minorGridlines: { count: 0 },
           textStyle:{color: '#ff0000'},
           format: 'HH:mm',
-          showTextEvery: 2
+          showTextEvery: 1
         },
         vAxis: {
           titleTextStyle: {color: '#ff0000'},
-          gridlines: {color: '#000000'},
+          gridlines: {color: 'transparent'},
           baselineColor: {color:'#550000'},
           textStyle: {color: '#ff0000'}
         },
@@ -128,7 +130,7 @@ function fDrawChart_weather() {
           }
         },
         pointSize: 8,
-        backgroundColor: '#000000',
+        backgroundColor: { fill:'transparent' },
         colors:[
           '#ff0000',
           '#bb7700',
@@ -245,14 +247,17 @@ function fDrawChart_tide() {
         titleTextStyle: {color: '#ff0000'},
         gridlines: {color: '#550000'},
         baselineColor: {color:'#550000'},
+        gridlines: {color: '#550000'},
+        minorGridlines: { count: 0 },
         textStyle:{color: '#ff0000'},
-        format: 'HH:mm'
+        format: 'HH:mm',
+        showTextEvery: 1
       },
       vAxis: {
         titleTextStyle: {color: '#ff0000'},
-        gridlines: {color: '#550000'},
+        gridlines: {color: 'transparent'},
         baselineColor: {color:'#550000'},
-        textStyle:{color: '#ff0000'}
+        textStyle: {color: '#ff0000'}
       },
       legend: {
         position: 'bottom',
@@ -267,7 +272,7 @@ function fDrawChart_tide() {
         }
       },
       pointSize: 0,
-      backgroundColor: '#000000',
+      backgroundColor: { fill:'transparent' },
       colors:[
         '#ff0000',
         '#bb7700',
