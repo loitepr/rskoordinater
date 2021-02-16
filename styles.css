@@ -29,7 +29,9 @@ table {
     position: fixed;
     top: 0px;
     right: 0px;
-    z-index: -1
+    z-index: -1;
+    width: 150px;
+    height: 54px;
 }
 
 .result {
@@ -51,8 +53,9 @@ table {
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 14px 16px;
+  padding: 12px 12px;
   transition: 0.3s;
+  width: 130px;
 }
 
 .tab button:hover {
