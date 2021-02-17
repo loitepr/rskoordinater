@@ -61,6 +61,24 @@ function fDrawChart_weather() {
         zArrayTimeWindDirection[i] = resultJSON.properties.timeseries[i].time;
         zArrayWindDirection[i] = resultJSON.properties.timeseries[i].data.instant.details.wind_from_direction;
       }
+
+      document.getElementById("weathersymbol").src = "yr.png/" + resultJSON.properties.timeseries[1].data.next_1_hours.summary.symbol_code + ".png";
+      document.getElementById("w_airpressure").innerHTML = "Lufttrykk: " + resultJSON.properties.timeseries[1].data.instant.details.air_pressure_at_sea_level + " hPa";
+      document.getElementById("w_airtemp").innerHTML = "Lufttemperatur: " + resultJSON.properties.timeseries[1].data.instant.details.air_temperature + "&degC";
+      document.getElementById("w_cloudTot").innerHTML = "Skydekke totalt: " + resultJSON.properties.timeseries[1].data.instant.details.cloud_area_fraction + "%";
+      document.getElementById("w_cloudH").innerHTML = "Skydekke, høyt: " + resultJSON.properties.timeseries[1].data.instant.details.cloud_area_fraction_high + "%";
+      document.getElementById("w_cloudL").innerHTML = "Skydekke lavt: " + resultJSON.properties.timeseries[1].data.instant.details.cloud_area_fraction_low + "%";
+      document.getElementById("w_cloudM").innerHTML = "Skydekke middels: " + resultJSON.properties.timeseries[1].data.instant.details.cloud_area_fraction_medium + "%";
+      document.getElementById("w_dewpoint").innerHTML = "Duggpunkt: " + resultJSON.properties.timeseries[1].data.instant.details.dew_point_temperature + "&degC";
+      document.getElementById("w_fog").innerHTML = "Tåke: " + resultJSON.properties.timeseries[1].data.instant.details.fog_area_fraction + "%";
+      document.getElementById("w_Hum").innerHTML = "Luftfuktighet: " + resultJSON.properties.timeseries[1].data.instant.details.relative_humidity + " mm";
+      document.getElementById("w_UV").innerHTML = "UV-indeks: " + resultJSON.properties.timeseries[1].data.instant.details.ultraviolet_index_clear_sky;
+      document.getElementById("w_windDir").innerHTML = "Vindretning: " + resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + " grader";
+      document.getElementById("w_windSpeed").innerHTML = "Vindhastighet: " + resultJSON.properties.timeseries[1].data.instant.details.wind_speed + " m/s";
+      document.getElementById("w_windSpeed2").innerHTML = resultJSON.properties.timeseries[1].data.instant.details.wind_speed +  "m/s";
+      document.getElementById("w_precipitation").innerHTML = "Nedbør: " + resultJSON.properties.timeseries[1].data.next_1_hours.details.precipitation_amount + " mm";
+      document.getElementById("w_arrow").style.transform = "rotate(" + resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + "deg)";
+
       data.addColumn('datetime', 'tid');
       data.addColumn('number', 'Bølgehøyde');
       data.addColumn('number', 'Vindstyrke');
@@ -437,5 +455,62 @@ function OpenTab(evt, cityName) {
 function pad(n){
   return n<10 ? '0'+n : n;
 }
+
+
+
+/*var words = document.getElementsByClassName('word');
+var wordArray = [];
+var currentWord = 0;
+
+words[currentWord].style.opacity = 1;
+for (var i = 0; i < words.length; i++) {
+  splitLetters(words[i]);
+}
+
+function changeWord() {
+  var cw = wordArray[currentWord];
+  var nw = currentWord == words.length-1 ? wordArray[0] : wordArray[currentWord+1];
+  for (var i = 0; i < cw.length; i++) {
+    animateLetterOut(cw, i);
+  }
+
+  for (var i = 0; i < nw.length; i++) {
+    nw[i].className = 'letter behind';
+    nw[0].parentElement.style.opacity = 1;
+    animateLetterIn(nw, i);
+  }
+
+  currentWord = (currentWord == wordArray.length-1) ? 0 : currentWord+1;
+}
+
+function animateLetterOut(cw, i) {
+  setTimeout(function() {
+		cw[i].className = 'letter out';
+  }, i*80);
+}
+
+function animateLetterIn(nw, i) {
+  setTimeout(function() {
+		nw[i].className = 'letter in';
+  }, 340+(i*80));
+}
+
+function splitLetters(word) {
+  var content = word.innerHTML;
+  word.innerHTML = '';
+  var letters = [];
+  for (var i = 0; i < content.length; i++) {
+    var letter = document.createElement('span');
+    letter.className = 'letter';
+    letter.innerHTML = content.charAt(i);
+    word.appendChild(letter);
+    letters.push(letter);
+  }
+
+  wordArray.push(letters);
+}
+
+changeWord();
+setInterval(changeWord, 3000);*/
 
 document.getElementById("defaultSelected").click();

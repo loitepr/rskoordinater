@@ -7,6 +7,8 @@
 </head>
 	<body>
 
+		<img src="RS_logo_Neg.png" id="logo">
+
 		<div class="tab">
 		  <button class="tablinks" onclick="OpenTab(event, 'tabDD');DMfromDD()">DD</button>
 		  <button class="tablinks" onclick="OpenTab(event, 'tabDM');DMfromDM()" id="defaultSelected">DM</button>
@@ -14,7 +16,7 @@
 			<button class="tablinks" onclick="OpenTab(event, 'tabUTM');DMfromUTM()">UTM</button>
 		  <button class="tablinks" onclick="OpenTab(event, 'tabMGRS');DMfromMGRS()">MGRS</button>
 		</div>
-<img src="RS_logo_Neg.png" id="logo">
+
 		<div id="tabDD" class="tabcontent">
 				<h3>Desimalgrader</h3>
 			<form id="DD" action="/action_page.php">
@@ -95,14 +97,47 @@
 			</div>
 		</div>
 
-		<br>
+		<table border="0" align="center">
+			<tr>
+				<td colspan="3">
+					<p class="result">
+						<br><div id="resultatN" class="result">58° 8.969' N</div>
+						<br><div id="resultatE" class="result">8° 2.031' Ø</div></td>
+					</p>
+			</tr>
+			<tr>
+				<td>
+					<img src="" id="weathersymbol">
+				</td>
+				<td width="200" align="center">
+					<div id="w_arrow">&uarr;</div><br><div id="w_windSpeed2" class="weather"></div>
+				</td>
+				<td>
+					<div id="w_airpressure" class="weather"></div>
+					<div id="w_airtemp" class="weather"></div>
+					<div id="w_cloudL" class="weather"></div>
+					<div id="w_cloudM" class="weather"></div>
+					<div id="w_cloudH" class="weather"></div>
+					<div id="w_cloudTot" class="weather"></div>
+					<div id="w_dewpoint" class="weather"></div>
+					<div id="w_fog" class="weather"></div>
+					<div id="w_Hum" class="weather"></div>
+					<div id="w_UV" class="weather"></div>
+					<div id="w_windDir" class="weather"></div>
+					<div id="w_windSpeed" class="weather"></div>
+					<div id="w_precipitation" class="weather"></div>
+				</td>
+			</tr>
+		</table>
 
-		<p class="result">
-			&darr;
-			<br><div id="resultatN" class="result">58° 8.969' N</div>
-			<br><div id="resultatE" class="result">8° 2.031' Ø</div>
-		</p>
-		<div id="map_distance" style="text-align:center"></div>
+		<!--<br>
+		<div class="text">
+			<p>Prioriter&nbsp
+			<span class="word color1">mannskapet.</span>
+			<span class="word color2">fartøyet.</span>
+			<span class="word color3">havaristen.</span>
+			</p>
+		</div>-->
 
 		<!-- TIDE CHART -->
 		<br><div id="chart_tide" style="width: 100%; height: 500px;"></div>
@@ -128,7 +163,7 @@
 
 		<br><div style="font-size: 12px; text-align:center">
 			<br>Kartene er © Kartverket og hentet fra norgeskart.no
-			<br>Værdata hentet fra MET Norway (met.no/yr.no)
+			<br>Værdata hentet fra MET Norway (met.no)
 			<br>Tidevannsnivå hentet fra fra Kartverket (sehavniva.no).
 		</div>
 
