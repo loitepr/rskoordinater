@@ -12,8 +12,8 @@ var zOldN;
 var zOldE;
 
 google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(fDrawChart_weather);
 google.charts.setOnLoadCallback(fDrawChart_tide);
+google.charts.setOnLoadCallback(fDrawChart_weather);
 
 function fDrawChart_weather() {
   var resultN = document.getElementById("resultatN").innerHTML;
@@ -24,9 +24,9 @@ function fDrawChart_weather() {
   var E_min = resultE.substring(resultE.indexOf(" ")+1, resultE.indexOf("'"));
   var fi_N = Number(N_deg) + Number(N_min)/60;
   var fi_E = Number(E_deg) + Number(E_min)/60;
-  var data = new google.visualization.DataTable();
   var urlWeather = "https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=" + fi_N + "&lon=" + fi_E;
   var urlWaveheight = "https://api.met.no/weatherapi/oceanforecast/0.9/?lat=" + fi_N + "&lon=" + fi_E;
+  var data = new google.visualization.DataTable();
 
   fetch(urlWeather, {"User-Agent"   : "RS Koordinater at beta website. https://rskoordinater.vercel.app. Contact: opplaring.rsrk.kristiansand@rs.no"})
   .then(res => res.json())
@@ -186,14 +186,16 @@ function fDrawChart_tide() {
 
   var currentDate = new Date();
   var endDate = new Date();
+  endDate.setDate(currentDate.getDate() + 1);
   var currentHour;
 
   currentDate = currentDate.getFullYear() + "-" + pad((currentDate.getMonth() + 1)) + "-" + pad(currentDate.getDate());
-  endDate = endDate.getFullYear() + "-" + pad((endDate.getMonth() + 1)) + "-" + pad((endDate.getDate() + 1));
+  endDate = endDate.getFullYear() + "-" + pad((endDate.getMonth() + 1)) + "-" + pad((endDate.getDate()));
   currentHour = pad(new Date().getHours()-5);
+  endHour = pad(new Date().getHours()-12);
 
-  var urlTide = "http://api.sehavniva.no/tideapi.php?lat=" + fi_N + "&lon=" + fi_E + "&fromtime=" + currentDate + "T" + currentHour + "%3A00&totime=" + endDate + "T" + currentHour + "%3A00&datatype=all&refcode=cd&place=&file=&lang=nn&interval=10&dst=0&tzone=&tide_request=locationdata";
-
+  var urlTide = "http://api.sehavniva.no/tideapi.php?lat=" + fi_N + "&lon=" + fi_E + "&fromtime=" + currentDate + "T" + currentHour + "%3A00&totime=" + endDate + "T" + endHour + "%3A00&datatype=all&refcode=cd&place=&file=&lang=nb&interval=10&dst=0&tzone=&tide_request=locationdata";
+console.log(urlTide);
   fetch(urlTide)
   .then(x => x.text())
   .then(function(response){
@@ -212,6 +214,8 @@ function fDrawChart_tide() {
     let zArrayTimePre = Array(countPre);
     let zArrayTimeNon = Array(countNone);
     let zArrayTimeFor = Array(countForecast);
+
+    document.getElementById("chart_tide_descr").innerHTML = xml.evaluate('/tide/locationdata/location/@descr', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent;
 
     for (i = 1; i <= countObs; i++) {
       zArrayObs[i-1] = Number(xml.evaluate('/tide/locationdata/data[position()=1]/waterlevel[position()=' + i + ']/@value', xml, null, XPathResult.ANY_TYPE, null).iterateNext().textContent);
