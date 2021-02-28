@@ -77,7 +77,7 @@ function fDrawChart_weather() {
       document.getElementById("w_windSpeed").innerHTML = "Vindhastighet: " + resultJSON.properties.timeseries[1].data.instant.details.wind_speed + " m/s";
       document.getElementById("w_precipitation").innerHTML = "Nedbør: " + resultJSON.properties.timeseries[1].data.next_1_hours.details.precipitation_amount + " mm";
 
-      document.getElementById("wind_arrow").style.transform = "rotate(" + resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + "deg)";
+      document.getElementById("wind_arrow").style.transform = "rotate(" + Number(resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + 180) + "deg)";
       document.getElementById("w_windSpeed2").innerHTML = resultJSON.properties.timeseries[1].data.instant.details.wind_speed +  " m/s";
       document.getElementById("wave_arrow").style.transform = "rotate(" + Number(xml.evaluate('(//mox:meanTotalWaveDirection)[1]', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent) + "deg)";
       document.getElementById("waveheight").innerHTML = zArrayWave[0] + " m";
