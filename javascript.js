@@ -187,18 +187,21 @@ function fDrawChart_tide() {
   var fi_N = Number(N_deg) + Number(N_min)/60;
   var fi_E = Number(E_deg) + Number(E_min)/60;
 
-  var currentDate = new Date();
+  var startDate = new Date();
   var endDate = new Date();
-  endDate.setDate(currentDate.getDate() + 1);
-  var currentHour;
+  var startTime = new Date();
+  var endTime = new Date();
 
-  currentDate = currentDate.getFullYear() + "-" + pad((currentDate.getMonth() + 1)) + "-" + pad(currentDate.getDate());
-  endDate = endDate.getFullYear() + "-" + pad((endDate.getMonth() + 1)) + "-" + pad((endDate.getDate()));
-  currentHour = pad(new Date().getHours()-5);
-  endHour = pad(new Date().getHours()-12);
+  startDate.setHours(new Date().getHours()-5);
+  endDate.setHours(new Date().getHours()+12);
 
-  var urlTide = "http://api.sehavniva.no/tideapi.php?lat=" + fi_N + "&lon=" + fi_E + "&fromtime=" + currentDate + "T" + currentHour + "%3A00&totime=" + endDate + "T" + endHour + "%3A00&datatype=all&refcode=cd&place=&file=&lang=nb&interval=10&dst=0&tzone=&tide_request=locationdata";
-console.log(urlTide);
+  zStartDate = startDate.getFullYear() + "-" + pad((startDate.getMonth() + 1)) + "-" + pad(startDate.getDate());
+  zEndDate = endDate.getFullYear() + "-" + pad((endDate.getMonth() + 1)) + "-" + pad((endDate.getDate()));
+  zStartHour = pad(startDate.getHours());
+  zEndHour = pad(endDate.getHours());
+
+  var urlTide = "http://api.sehavniva.no/tideapi.php?lat=" + fi_N + "&lon=" + fi_E + "&fromtime=" + zStartDate + "T" + zStartHour + "%3A00&totime=" + zEndDate + "T" + zEndHour + "%3A00&datatype=all&refcode=cd&place=&file=&lang=nb&interval=10&dst=0&tzone=&tide_request=locationdata";
+
   fetch(urlTide)
   .then(x => x.text())
   .then(function(response){
