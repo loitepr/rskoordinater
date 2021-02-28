@@ -71,13 +71,13 @@ function fDrawChart_weather() {
       document.getElementById("w_cloudM").innerHTML = "Skydekke middels: " + resultJSON.properties.timeseries[1].data.instant.details.cloud_area_fraction_medium + "%";
       document.getElementById("w_dewpoint").innerHTML = "Duggpunkt: " + resultJSON.properties.timeseries[1].data.instant.details.dew_point_temperature + "&degC";
       document.getElementById("w_fog").innerHTML = "Tåke: " + resultJSON.properties.timeseries[1].data.instant.details.fog_area_fraction + "%";
-      document.getElementById("w_Hum").innerHTML = "Luftfuktighet: " + resultJSON.properties.timeseries[1].data.instant.details.relative_humidity + " mm";
+      document.getElementById("w_Hum").innerHTML = "Luftfuktighet: " + resultJSON.properties.timeseries[1].data.instant.details.relative_humidity + "%";
       document.getElementById("w_UV").innerHTML = "UV-indeks: " + resultJSON.properties.timeseries[1].data.instant.details.ultraviolet_index_clear_sky;
       document.getElementById("w_windDir").innerHTML = "Vindretning: " + resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + " grader";
       document.getElementById("w_windSpeed").innerHTML = "Vindhastighet: " + resultJSON.properties.timeseries[1].data.instant.details.wind_speed + " m/s";
-      document.getElementById("w_windSpeed2").innerHTML = resultJSON.properties.timeseries[1].data.instant.details.wind_speed +  "m/s";
+      document.getElementById("w_windSpeed2").innerHTML = resultJSON.properties.timeseries[1].data.instant.details.wind_speed +  " m/s";
       document.getElementById("w_precipitation").innerHTML = "Nedbør: " + resultJSON.properties.timeseries[1].data.next_1_hours.details.precipitation_amount + " mm";
-      document.getElementById("w_arrow").style.transform = "rotate(" + resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + "deg)";
+      document.getElementById("w_arrow").style.transform = "rotate(" + resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + " deg)";
 
       data.addColumn('datetime', 'tid');
       data.addColumn('number', 'Bølgehøyde');
