@@ -75,9 +75,12 @@ function fDrawChart_weather() {
       document.getElementById("w_UV").innerHTML = "UV-indeks: " + resultJSON.properties.timeseries[1].data.instant.details.ultraviolet_index_clear_sky;
       document.getElementById("w_windDir").innerHTML = "Vindretning: " + resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + " grader";
       document.getElementById("w_windSpeed").innerHTML = "Vindhastighet: " + resultJSON.properties.timeseries[1].data.instant.details.wind_speed + " m/s";
-      document.getElementById("w_windSpeed2").innerHTML = resultJSON.properties.timeseries[1].data.instant.details.wind_speed +  " m/s";
       document.getElementById("w_precipitation").innerHTML = "Nedbør: " + resultJSON.properties.timeseries[1].data.next_1_hours.details.precipitation_amount + " mm";
-      document.getElementById("w_arrow").style.transform = "rotate(" + resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + " deg)";
+
+      document.getElementById("wind_arrow").style.transform = "rotate(" + resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + "deg)";
+      document.getElementById("w_windSpeed2").innerHTML = resultJSON.properties.timeseries[1].data.instant.details.wind_speed +  " m/s";
+      document.getElementById("wave_arrow").style.transform = "rotate(" + Number(xml.evaluate('(//mox:meanTotalWaveDirection)[1]', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent) + "deg)";
+      document.getElementById("waveheight").innerHTML = zArrayWave[0] + " m";
 
       data.addColumn('datetime', 'tid');
       data.addColumn('number', 'Bølgehøyde');
