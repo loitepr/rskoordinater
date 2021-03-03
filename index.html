@@ -137,13 +137,17 @@
 		</table>
 
 		<!-- TIDE CHART -->
+		<br><div id="title">Tidevann:</div>
 		<br><div id="chart_tide" style="width: 100%; height: 500px;"></div>
 		<br><div id="chart_tide_descr" align="center"></div>
+
 		<!--  WEATHER CHART -->
+		<br><div id="title">Vind og bølgehøyde:</div>
 		<br><div id="chart_weather" style="width: 100%; height: 500px;"></div>
 
 		<!-- MAP -->
-		<br><form id="map_settings" action="/action_page.php" align="right">
+		<br><div id="title">Kart:</div>
+		<br><form id="map_settings" action="/action_page.php" align="center">
 			<select style="width:300px" id="map_type" name="map_type" onchange="UpdateMapLocation();">
 				<option value="1011">Sjøkart - ENC</option>
 				<option value="1008">Sjøkart papir</option>

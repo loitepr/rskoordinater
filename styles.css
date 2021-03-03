@@ -29,6 +29,11 @@ table {
   font-size: 16px;
 }
 
+#title {
+  font-size: 34px;
+  font-weight: bold;
+}
+
 #logo {
     position: fixed;
     top: 0px;
@@ -36,6 +41,10 @@ table {
     z-index: 1;
     width: 150px;
     height: 54px;
+}
+
+#chart_tide_descr {
+  font-size: 16px;
 }
 
 .result {
@@ -48,7 +57,6 @@ table {
 .tab {
   overflow: hidden;
   border: 0px;
-
 }
 
 .tab button {
@@ -83,52 +91,4 @@ table {
 
 #defaultSelected {
   display: block;
-}
-
-@keyframes fadeEffect {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-.text {
-  text-align: center;
-}
-.word {
-  position: absolute;
-  width: 220px;
-  opacity: 0;
-}
-
-.letter {
-  display: inline-block;
-  position: relative;
-  float: left;
-  transform: translateZ(25px);
-  transform-origin: 50% 50% 25px;
-}
-
-.letter.out {
-  transform: rotateX(90deg);
-  transition: transform 0.32s cubic-bezier(0.55, 0.055, 0.675, 0.19);
-}
-
-.letter.behind {
-  transform: rotateX(-90deg);
-}
-
-.letter.in {
-  transform: rotateX(0deg);
-  transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.color1 {
-  color: #880044;
-}
-
-.color2 {
-  color: #aa4477;
-}
-
-.color3 {
-  color: #00ff22;
 }

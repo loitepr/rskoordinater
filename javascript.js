@@ -101,7 +101,6 @@ function fDrawChart_weather() {
       //  data.addRow([new Date(zArrayTimeWindDirection[i]), null, null, null, zArrayWindDirection[i]]);
 
       var options = {
-        title: 'Bølgehøyde og vind',
         lineWidth: 4,
         titleTextStyle: {
           color: '#ff0000',
@@ -262,7 +261,6 @@ function fDrawChart_tide() {
     data.addRow([new Date(zArrayTimePre[i]), null, zArrayPre[i], null, null]);
 
     var options = {
-      title: 'Tidevann',
       lineWidth: 4,
       titleTextStyle: {
         color: '#ff0000',
