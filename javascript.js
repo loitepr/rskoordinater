@@ -25,20 +25,16 @@ function fDrawChart_weather() {
   var fi_N = Number(N_deg) + Number(N_min)/60;
   var fi_E = Number(E_deg) + Number(E_min)/60;
   var urlWeather = "https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=" + fi_N + "&lon=" + fi_E;
-  var urlWaveheight = "https://api.met.no/weatherapi/oceanforecast/0.9/?lat=" + fi_N + "&lon=" + fi_E;
+  var urlWaveheight = "https://api.met.no/weatherapi/oceanforecast/2.0/complete?lat=" + fi_N + "&lon=" + fi_E;
   var data = new google.visualization.DataTable();
 
   fetch(urlWeather, {"User-Agent"   : "RS Koordinater at beta website. https://rskoordinater.vercel.app. Contact: opplaring.rsrk.kristiansand@rs.no"})
   .then(res => res.json())
   .then((resultJSON) => {
     fetch(urlWaveheight, {"User-Agent"   : "RS Koordinater at beta website. https://rskoordinater.vercel.app. Contact: opplaring.rsrk.kristiansand@rs.no"})
-    .then(x => x.text())
+    .then(x => x.json())
     .then(function(response){
-      let parser = new DOMParser();
-      let xml = parser.parseFromString(response, "application/xml");
-      let nsResolver = xml.createNSResolver (xml.documentElement);
-      let count = 12; //xml.evaluate("count(//mox:significantTotalWaveHeight)", xml, nsResolver, XPathResult.ANY_TYPE, null).numberValue;
-
+      let count = 12;
       zArrayWave = Array(count);
       zArrayTimeWave = Array(count);
       zArrayWind = Array(count);
@@ -48,9 +44,9 @@ function fDrawChart_weather() {
       zArrayWindDirection = Array(count);
       zArrayTimeWindDirection = Array(count);
 
-      for (i = 1; i <= count; i++) {
-        zArrayWave[i-1] = Number(xml.evaluate('(//mox:significantTotalWaveHeight)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent);
-        zArrayTimeWave[i-1] = xml.evaluate('(//gml:begin)[' + i + ']', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent;
+      for (i = 0; i <= count-1; i++) {
+        zArrayWave[i] = response.properties.timeseries[i].data.instant.details.sea_surface_wave_height;
+        zArrayTimeWave[i] = response.properties.timeseries[i].time;
       }
 
       for (i = 0; i <= count-1; i++) {
@@ -79,7 +75,7 @@ function fDrawChart_weather() {
 
       document.getElementById("wind_arrow").style.transform = "rotate(" + Number(resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + 180) + "deg)";
       document.getElementById("w_windSpeed2").innerHTML = resultJSON.properties.timeseries[1].data.instant.details.wind_speed +  " m/s";
-      document.getElementById("wave_arrow").style.transform = "rotate(" + Number(xml.evaluate('(//mox:meanTotalWaveDirection)[1]', xml, nsResolver, XPathResult.ANY_TYPE, null).iterateNext().textContent) + "deg)";
+      document.getElementById("wave_arrow").style.transform = "rotate(" + Number(response.properties.timeseries[1].data.instant.details.sea_surface_wave_from_direction) + "deg)";
       document.getElementById("waveheight").innerHTML = zArrayWave[0] + " m";
 
       data.addColumn('datetime', 'tid');
