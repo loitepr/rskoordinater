@@ -443,7 +443,7 @@ function ShowManualMap() {
 
   document.getElementById("mapid").style.display = "block";
 
-  var mymap = L.map('mapid').setView([58.105, 8.09], 13);
+  var mymap = L.map('mapid').setView([58.105, 8.09], 11);
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
