@@ -475,6 +475,7 @@ function showPosition(position) {
   document.getElementById("DM").elements.namedItem("degE").value = degE;
   document.getElementById("DM").elements.namedItem("minN").value = minN;
   document.getElementById("DM").elements.namedItem("minE").value = minE;
+  document.getElementById("defaultSelected").click();
   DMfromDM();
 }
 
