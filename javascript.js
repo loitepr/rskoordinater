@@ -454,7 +454,33 @@ function OpenTab(evt, cityName) {
 
   document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " active";
+
+
 }
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, showPositionFailure, options);
+  } else {
+    //x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  var degN = Math.floor(position.coords.latitude);
+  var degE = Math.floor(position.coords.longitude);
+  var minN = 60 * (position.coords.latitude - degN);
+  var minE = 60 * (position.coords.longitude - degE);
+  document.getElementById("DM").elements.namedItem("degN").value = degN;
+  document.getElementById("DM").elements.namedItem("degE").value = degE;
+  document.getElementById("DM").elements.namedItem("minN").value = minN;
+  document.getElementById("DM").elements.namedItem("minE").value = minE;
+  DMfromDM();
+}
+
+function showPositionFailure(position) {}
+
+const options = { enableHighAccuracy: true, maximumAge: 30000, timeout: 27000};
 
 function pad(n){
   return n<10 ? '0'+n : n;
