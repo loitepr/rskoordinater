@@ -29,6 +29,8 @@ table {
   font-size: 16px;
 }
 
+#mapid { height: 380px; style: none}
+
 #title {
   font-size: 34px;
   font-weight: bold;

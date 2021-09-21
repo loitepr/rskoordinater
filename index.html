@@ -3,10 +3,10 @@
 	<head>
 			<title>RS Koordinater</title>
 			<link rel="stylesheet" href="styles.css">
+			<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
 			<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 </head>
 	<body>
-
 		<img src="RS_logo_Neg.png" id="logo">
 
 		<div class="tab">
@@ -16,7 +16,10 @@
 			<button class="tablinks" onclick="OpenTab(event, 'tabUTM');DMfromUTM()">UTM</button>
 		  <button class="tablinks" onclick="OpenTab(event, 'tabMGRS');DMfromMGRS()">MGRS</button>
 			<button class="tablinks" onclick="getLocation()">&#128225;</button>
+			<button class="tablinks" onclick="ShowManualMap()">&#x1f5fa;</button>
 		</div>
+
+		<div id="mapid"></div>
 
 		<div id="tabDD" class="tabcontent">
 				<h3>Desimalgrader</h3>
@@ -173,5 +176,6 @@
 		<script src="proj4.js"></script>																		<!-- 		Proj4js					- used to convert UTM 												-->
 		<script src="mgrs.js"></script>																			<!-- 		mgrs						- convertion to MGRS 													-->
 		<script src="javascript.js"></script>																<!--	 	javascript			- general script used throughout the site 		-->
+		<script src="leaflet-src.js"></script>															<!--		leaflet					- extra map for finding position manually			-->
 	</body>
 </html>

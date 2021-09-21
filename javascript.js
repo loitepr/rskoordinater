@@ -439,6 +439,45 @@ function UpdateMapLocation() {
   document.getElementById("map_area").parentNode.replaceChild(document.getElementById("map_area").cloneNode(), document.getElementById("map_area"));
 };
 
+function ShowManualMap() {
+
+  document.getElementById("mapid").style.display = "block";
+
+  var mymap = L.map('mapid').setView([58.105, 8.09], 13);
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: 'Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+    tileSize: 512,
+    zoomOffset: -1
+  }).addTo(mymap);
+
+  var popup = L.popup();
+
+  function onMapClick(e) {
+      var degN = Math.floor(e.latlng.lat);
+      var degE = Math.floor(e.latlng.lng);
+      var minN = 60 * (e.latlng.lat - degN);
+      var minE = 60 * (e.latlng.lng - degE);
+      console.log(degN);
+      console.log(degE);
+      console.log(minN);
+      console.log(minE);
+      document.getElementById("DM").elements.namedItem("degN").value = degN;
+      document.getElementById("DM").elements.namedItem("degE").value = degE;
+      document.getElementById("DM").elements.namedItem("minN").value = minN;
+      document.getElementById("DM").elements.namedItem("minE").value = minE;
+      document.getElementById("defaultSelected").click();
+      DMfromDM();
+
+      popup
+        .setLatLng(e.latlng)
+        .setContent("Du markerte:<br>" + degN.toFixed(3).toString() + "&deg; " + minN.toFixed(3).toString() + "' N<br>" +  degE.toFixed(3).toString() + "&deg; " + minE.toFixed(3).toString() + "' Ø")
+        .openOn(mymap);
+        document.getElementById("mapid").style.display = "none";
+  }
+
+  mymap.on('click', onMapClick);
+}
 function OpenTab(evt, cityName) {
   var i, tabcontent, tablinks;
 
@@ -488,3 +527,4 @@ function pad(n){
 }
 
 document.getElementById("defaultSelected").click();
+document.getElementById("mapid").style.display = "none";
