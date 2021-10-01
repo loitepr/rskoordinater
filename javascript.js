@@ -75,7 +75,7 @@ function fDrawChart_weather() {
 
       document.getElementById("wind_arrow").style.transform = "rotate(" + Number(resultJSON.properties.timeseries[1].data.instant.details.wind_from_direction + 180) + "deg)";
       document.getElementById("w_windSpeed2").innerHTML = resultJSON.properties.timeseries[1].data.instant.details.wind_speed +  " m/s";
-      document.getElementById("wave_arrow").style.transform = "rotate(" + Number(response.properties.timeseries[1].data.instant.details.sea_surface_wave_from_direction) + "deg)";
+      document.getElementById("wave_arrow").style.transform = "rotate(" + Number(response.properties.timeseries[1].data.instant.details.sea_surface_wave_from_direction+180) + "deg)";
       document.getElementById("waveheight").innerHTML = zArrayWave[0] + " m";
 
       data.addColumn('datetime', 'tid');
@@ -317,6 +317,8 @@ function fDrawChart_tide() {
 }
 
 function DMfromDMS() {
+  document.getElementById("mapid").style.display = "none";
+
   var degN= Number(document.getElementById("DMS").elements.namedItem("degN").value);
   var minN= Number(document.getElementById("DMS").elements.namedItem("minN").value);
   var secN= Number(document.getElementById("DMS").elements.namedItem("secN").value);
@@ -336,6 +338,8 @@ function DMfromDMS() {
 };
 
 function DMfromDD() {
+  document.getElementById("mapid").style.display = "none";
+
   var degN = Number(document.getElementById("DD").elements.namedItem("degN").value);
   var degE = Number(document.getElementById("DD").elements.namedItem("degE").value);
 
@@ -349,6 +353,8 @@ function DMfromDD() {
 };
 
 function DMfromDM() {
+  document.getElementById("mapid").style.display = "none";
+
   var degN = Number(document.getElementById("DM").elements.namedItem("degN").value);
   var degE = Number(document.getElementById("DM").elements.namedItem("degE").value);
   var degdecN = Number(document.getElementById("DM").elements.namedItem("minN").value);
@@ -361,6 +367,8 @@ function DMfromDM() {
 }
 
 function DMfromUTM() {
+  document.getElementById("mapid").style.display = "none";
+
   var utm = "+proj=utm +zone=" + document.getElementById("UTM").elements.namedItem("zone").value;
   var wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
   var resultUTM = proj4(utm,wgs84,[Number(document.getElementById("UTM").elements.namedItem("northing").value),Number(document.getElementById("UTM").elements.namedItem("easting").value)]);
@@ -378,6 +386,8 @@ function DMfromUTM() {
 };
 
 function DMfromMGRS() {
+  document.getElementById("mapid").style.display = "none";
+
   var resultMGRS = mgrs.toPoint(document.getElementById("MGRS").elements.namedItem("zone").value+document.getElementById("MGRS").elements.namedItem("zone2").value+document.getElementById("MGRS").elements.namedItem("easting").value+document.getElementById("MGRS").elements.namedItem("northing").value).toString();
 
   var degE = resultMGRS.toString().substring(0,resultMGRS.toString().indexOf(","));
@@ -478,6 +488,7 @@ function ShowManualMap() {
 
   mymap.on('click', onMapClick);
 }
+
 function OpenTab(evt, cityName) {
   var i, tabcontent, tablinks;
 
