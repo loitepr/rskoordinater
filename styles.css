@@ -5,6 +5,9 @@ body {
   color: red;
   background-color:  black;
 }
+#helptext {
+  font-size: 20px;
+}
 input, select, button, option {
   color: red;
   background-color: black;
@@ -29,7 +32,7 @@ table {
   font-size: 16px;
 }
 
-#mapid { height: 380px; style: none}
+#mapid { height: 380px; style: noen;}
 
 #title {
   font-size: 34px;

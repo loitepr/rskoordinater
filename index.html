@@ -8,13 +8,14 @@
 </head>
 	<body>
 		<div class="tab">
-		  <button class="tablinks" onclick="OpenTab(event, 'tabDD');DMfromDD()" id="testing2">DD</button>
-		  <button class="tablinks" onclick="OpenTab(event, 'tabDM');DMfromDM()" id="defaultSelected">DM</button>
-		  <button class="tablinks" onclick="OpenTab(event, 'tabDMS');DMfromDMS()">DMS</button>
-			<button class="tablinks" onclick="OpenTab(event, 'tabUTM');DMfromUTM()">UTM</button>
-		  <button class="tablinks" onclick="OpenTab(event, 'tabMGRS');DMfromMGRS()">MGRS</button>
-			<button class="tablinks" onclick="getLocation()">&#128225;</button>
+		  	<button class="tablinks" onclick="OpenTab(event, 'tabDD');DMfromDD()" id="testing2">DD</button>
+		  	<button class="tablinks" onclick="OpenTab(event, 'tabDM');DMfromDM()" id="defaultSelected">DM</button>
+		  	<button class="tablinks" onclick="OpenTab(event, 'tabDMS');DMfromDMS()">DMS</button>
+		  	<button class="tablinks" onclick="OpenTab(event, 'tabUTM');DMfromUTM()">UTM</button>
+		  	<button class="tablinks" onclick="OpenTab(event, 'tabMGRS');DMfromMGRS()">MGRS</button>
+		  	<button class="tablinks" onclick="getLocation()">&#128225;</button>
 			<button class="tablinks" onclick="ShowManualMap()">&#x1f5fa;</button>
+			<button class="tablinks" onclick="OpenTab(event, 'tabHelp')">?</button>
 		</div>
 
 		<div id="mapid"></div>
@@ -74,6 +75,21 @@
 					<option value="vest">Vest</option>
 				</select>
 			</form>
+		</div>
+
+		<div id="tabHelp" class="tabcontent">
+			<h3>Hjelp</h3>
+			<p id="helptext">Velg hvilket koordinatsystem du vil konvertere FRA i menyen øverst. Under her vil du se det konverterte resultatet.
+				<br>Denne nettisden konverterer kun til desimalgrader siden dette er det eneste vi benytter i redningsskøytene.
+			
+				<br><br>DD = Desimalgrader (eks. 58,0771196° N)
+				<br>DM = Desimalminutter (eks. 58° 4.627' N)
+				<br>DMS = Desimalsekunder (eks. 58° 4' 37,6305" N
+				<br>UTM = Universal Transverse Mercator (eks. 32V4452976437672)
+				<br>MGRS = Military Grid Reference System (eks. 32VMK4529737671)
+
+				<br><br>Lengre ned på siden her vil du finne informasjon om bølger, vær og vind, tidevann og ulike kart sentrert rundt den konverterte posisjonen.
+			</p>
 		</div>
 
 		<div id="tabUTM" class="tabcontent">
