@@ -195,7 +195,7 @@ function fDrawChart_tide() {
   zStartHour = pad(startDate.getHours());
   zEndHour = pad(endDate.getHours());
 
-  var urlTide = "http://api.sehavniva.no/tideapi.php?lat=" + fi_N + "&lon=" + fi_E + "&fromtime=" + zStartDate + "T" + zStartHour + "%3A00&totime=" + zEndDate + "T" + zEndHour + "%3A00&datatype=all&refcode=cd&place=&file=&lang=nb&interval=10&dst=0&tzone=&tide_request=locationdata";
+  var urlTide = "http://vannstand.kartverket.no/tideapi.php?lat=" + fi_N + "&lon=" + fi_E + "&fromtime=" + zStartDate + "T" + zStartHour + "%3A00&totime=" + zEndDate + "T" + zEndHour + "%3A00&datatype=all&refcode=cd&place=&file=&lang=nb&interval=10&dst=0&tzone=&tide_request=locationdata";
 
   fetch(urlTide)
   .then(x => x.text())
